@@ -6,3 +6,5 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
+
+  - Abstract: [PDF](docs/abstract.pdf) [TeX](submission/abstract.tex)

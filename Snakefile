@@ -6,14 +6,14 @@ rule targets:
 rule compile_tex:
     input:
         code="code/compile_tex.sh",
-        tex="submission/{name}.tex",
+        tex="submission/{filename}.tex",
         pre="preamble.tex",
         bib="prelim.bib"
     output:
-        pdf="docs/{name}.pdf"
+        pdf="docs/{filename}.pdf"
     shell:
         """
-        ./{input.code} {input.tex} {output.pdf} {wildcards.name}
+        ./{input.code} {input.tex} {output.pdf} {wildcards.filename}
         """
 
 rule render_readme:
@@ -21,8 +21,7 @@ rule render_readme:
         code="code/render.R",
         rmd="README.Rmd"
     output:
-        file="README.md",
-        html=temp("README.html")
+        file="README.md"
     params:
         format="github_document"
     script:

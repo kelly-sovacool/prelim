@@ -1,5 +1,7 @@
 ---
-output: github_document
+output:
+    github_document:
+        html_preview: false
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -15,3 +17,6 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 <!-- badges: end -->
+
+- Abstract: [PDF](docs/abstract.pdf) [TeX](submission/abstract.tex)
+
