@@ -33,6 +33,8 @@ Let's use metagenomics and metabolomics instead, since metagenomes tells us the 
                 - limited to what we know in KEGG.
             - use GNPS networking to cluster unkown features with known ones.
             - "Another issue is that there is an overlap between metabolites that are externally derived, produced by host metabolism, and produced through microbial cometabolism, which adds to the difficulty in setting up these types of databases; DAS is one such metabolite." - Johnson 2016
+- interpersonal variation of taxonomic composition can outweigh the variation observed between disease states.
+    - "Community-level function is often more conserved than community composition" [humann2 paper]
 - get taxonomic community composition and functional community structure
     - should get fcnl comm struct from metagenomes and/or metabolomes?
         - find one paper that classifies fcnl potential from metagenomes, another from metabolomes. use both techniques and compare?
@@ -67,20 +69,21 @@ Questions:
 \subsection*{Aim 1. Assess the importance of functional redundancy of the gut microbiome in CRC.}
 \textit{Hypothesis: Using functional gene profiles instead of only taxonomic profiles improves the classification of samples as CRC or non-cancerous because of functional redundancy in the gut microbiome.}
 \begin{enumerate}
-    \item Build taxonomic profiles with OTUs from 16S rRNA gene sequences and build functional gene profiles with metagenomes.
-    \item Compare taxonomic to functional gene composition of microbiomes within and between disease states to determine presence of functional redundancy.
-    \item Build machine learning models to classify samples as CRC or non-cancerous with taxonomic profiles, functional gene profiles, or both as model features to assess importance of functional redundancy.
+    \item Build taxonomic profiles with OTUs from 16S rRNA gene sequences and build profiles of functional potential from metagenomes.
+    \item Compare taxonomic composition to functional potential of microbiomes within and between disease states to determine presence of functional redundancy.
+    \item Build machine learning models to classify samples as CRC or non-cancerous with taxonomic composition, functional potential profiles, or both as model features to assess importance of functional redundancy.
 \end{enumerate}
 
 \subsection*{Aim 2. Assess the concordance of metabolism with functional potential in CRC.}
 \textit{Hypothesis: }
 \begin{enumerate}
-    \item Annotate compounds from untargeted mass spectrometry with the public GNPS database.
-    \item Determine which compounds could be produced by the microbiome by matching KEGG compound IDs to KEGG identifiers from metagenomes.
-    \item Correlate unknown compounds with OTUs to identify which are associated with microbes.
-    \item Assess how well the putative microbially-derived compounds concord with functional profiles from metagenomes
+    \item Annotate compounds from untargeted mass spectrometry with the GNPS database.
+    \item Determine which compounds could be produced by the microbiome by matching KEGG compound IDs to KEGG identifiers from metagenomes which are capable of producing them.
+    \item Assess how well the putative microbially-derived compounds match functional gene profiles from metagenomes
     \item difference in crc vs non-cancerous?
 \end{enumerate}
+
+- how many genes (functional potential) have corresponding metabolites actually shown?
 
 - some toxigenic gene products produced by bacteria are known. can we use GNPS to identify unknown features as potentially toxigenic products based on their similarity to known toxigenic ones?
 - does functional redundancy from metagenomes correlate with actual metabolites?
