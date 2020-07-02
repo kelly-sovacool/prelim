@@ -12,16 +12,20 @@
 
 background and motivation, testable hypothes(is/es), two specific aims, and a summary of the proposed research. \cite{bikel_combining_2015}
 
-some bacteria that aren't taxonomically closely related can be capable of producing some of the same gene products.
+bacteria that aren't taxonomically closely related can be capable of producing some of the same gene products.
 just like different charismatic megafauna can have the same niche in an ecosystem (predator X and Y both eat prey Z), different bacteria can cover the same niche.
 looking only at taxonomy may not be enough to understand the role and response of the gut microbiome in health and disease processes.
+some studies couldn't find strong signal in 16S OTUs to differentiate CRC from normal, but found different metabolites [Weir 2013]
 
-some studies use PiCrust in an ill-conceived attempt to reconstruct the possible functional potential of communities from 16S sequence.
-That's a dumb idea.
+some studies use PiCrust in an ill-conceived attempt to predict the functional potential of communities from 16S sequence [Perera 2018].
+That's a dumb idea. Why use a prediction when you can get the real thing?
 Let's use metagenomics and metabolomics instead, since metagenomes tells us the actual genes capable of producing products, and metabolomics tells us the functions that the microbiome are performing at the time of sampling.
+
+
 
 - techniques:
     - metagenomics: functional potential of a community.
+        - humann2
     - 16S OTUs: taxonomic community composition.
     - lc-ms/ms: metabolites in the gut.
         - some metabolies are from bacteria, human, and diet. and there's overlap.
@@ -41,33 +45,46 @@ Let's use metagenomics and metabolomics instead, since metagenomes tells us the 
     - between disease states
         - taxonomic vs functional gene composition
         - metabolomic vs functional gene composition
-- TODO: look at notes from talk by Robert (lastname?) of MSU from last year. used GNPS and QIIME in gut microbiome study.
 - limitations:
     - temporal changes in metabolites sampled. this study is not longitudinal.
 
-hypotheses:
+- TODO: look at notes from talk by Robert (lastname?) of MSU from last year. used GNPS and QIIME in gut microbiome study.
+
+Hypotheses:
+- There is functional redundancy in CRC communities.
+    - When CRC communities have different taxonomic composition, they have similar functional composition.
+        - Functional redundancy explains the taxonomic variability between individual hosts with the same disease status.
 - Clustering communities based on functional potential improves classification into disease states compared to clustering based on taxonomic composition.
-- When there is not a significant difference in taxonomic composition of CRC and normal communities, there is a significant difference in their functional potential. and in their actual metabolites.
-- when CRC communities have different taxonomic composition, they have similar functional composition.
+- When there is not a significant difference in taxonomic composition of CRC and normal communities, there is a significant difference in their functional potential and in their metabolomic profiles.
 
-\subsection*{Aim 1. Assess concordance of functional redundancy and taxonomic composition of the microbiome in CRC}
-\textit{Hypothesis: }
-%\begin{enumerate}
-%\end{enumerate}
-
-- is there correlation between taxonomic composition and functional potential (composition) of microbiome?
+Questions:
+- is there correlation between taxonomic composition and functional potential (metagenome composition) of microbiome?
 - does the idea of functional redundancy hold up during CRC?
 - is concordance stronger/weaker in CRC vs normal?
-- some studies couldn't find strong signal in 16S OTUs to differentiate CRC from normal. [Weir 2013]
-    - where OTU composition doesn't show a difference, does functional potential show a significant difference?
-    - does taking fcnl redundancy into account improve classification of samples into CRC vs normal? even in studies that did find a difference?
+- where OTU composition doesn't show a difference between CRC and normal [Weir 2013], does functional potential show a significant difference?
+- does taking fcnl redundancy into account improve classification of samples into CRC vs normal? even in studies that did find a difference?
 
-\subsection*{Aim 2. metabolites concordance with metagenomes in CRC}
-%\begin{enumerate}
-%\end{enumerate}
+\subsection*{Aim 1. Assess the importance of functional redundancy of the gut microbiome in CRC.}
+\textit{Hypothesis: Using functional gene profiles instead of only taxonomic profiles improves the classification of samples as CRC or non-cancerous because of functional redundancy in the gut microbiome.}
+\begin{enumerate}
+    \item Build taxonomic profiles with OTUs from 16S rRNA gene sequences and build functional gene profiles with metagenomes.
+    \item Compare taxonomic to functional gene composition of microbiomes within and between disease states to determine presence of functional redundancy.
+    \item Build machine learning models to classify samples as CRC or non-cancerous with taxonomic profiles, functional gene profiles, or both as model features to assess importance of functional redundancy.
+\end{enumerate}
 
-- does functional redundancy from metagenomes correlate with actual metabolites?
+\subsection*{Aim 2. Assess the concordance of metabolism with functional potential in CRC.}
+\textit{Hypothesis: }
+\begin{enumerate}
+    \item Annotate compounds from untargeted mass spectrometry with the public GNPS database.
+    \item Determine which compounds could be produced by the microbiome by matching KEGG compound IDs to KEGG identifiers from metagenomes.
+    \item Correlate unknown compounds with OTUs to identify which are associated with microbes.
+    \item Assess how well the putative microbially-derived compounds concord with functional profiles from metagenomes
+    \item difference in crc vs non-cancerous?
+\end{enumerate}
+
 - some toxigenic gene products produced by bacteria are known. can we use GNPS to identify unknown features as potentially toxigenic products based on their similarity to known toxigenic ones?
+- does functional redundancy from metagenomes correlate with actual metabolites?
+- find intersection of biosynthetic genes (metagenomes -> antiSMASH) and known metabolites that are present. how well do they match?
 
 insert concluding/summary sentence here
 
