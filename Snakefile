@@ -3,17 +3,29 @@ rule targets:
         "README.md",
         "docs/abstract.pdf"
 
-rule compile_tex:
+rule compile_abstract:
     input:
         code="code/compile_tex.sh",
-        tex="submission/{filename}.tex",
-        pre="preamble.tex",
-        bib="prelim.bib"
+        tex="submission/abstract.tex",
+        pre="preamble.tex"
     output:
         pdf="docs/{filename}.pdf"
     shell:
         """
-        ./{input.code} {input.tex} {output.pdf} {wildcards.filename}
+        bash {input.code} {input.tex} {output.pdf} {wildcards.filename}
+        """
+
+rule compile_proposal:
+    input:
+        code="code/compile_tex.sh",
+        tex="submission/proposal.tex",
+        pre="preamble.tex",
+        bib="prelim.bib"
+    output:
+        pdf="docs/proposal.pdf"
+    shell:
+        """
+        bash {input.code} {input.tex} {output.pdf} {wildcards.filename}
         """
 
 rule render_readme:
