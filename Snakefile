@@ -26,18 +26,42 @@ rule render_readme:
     params:
         format="github_document"
     script:
-        "{input.code}"
+        "code/render.R"
 
 rule render_slides:
     input:
         code="code/render.R",
         rmd="submission/presentation.Rmd"
     output:
-        file="docs/presentation.html"
+        file="submission/presentation.html"
+        #extras=directory("submission/presentation_files")
     params:
         format="xaringan::moon_reader"
     script:
-        "{input.code}"
+        "code/render.R"
+
+rule summon_remark:
+    output:
+        "docs/libs/remark-latest.min.js"
+    shell:
+        """
+        R -e 'xaringan::summon_remark(to = "docs/libs/")'
+        """
+
+rule clean_xaringan:
+    input:
+        files=rules.render_slides.output,
+        js=rules.summon_remark.output
+    output:
+        "docs/presentation.html"
+        #directory("docs/presentation_files")
+    shell:
+        """
+        for f in {input.files}; do
+            mv $f docs/
+        done
+        rm -r submission/libs
+        """
 
 rule texclean:
     shell:
