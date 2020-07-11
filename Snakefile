@@ -1,28 +1,16 @@
 rule targets:
     input:
         "README.md",
-        "docs/abstract.pdf"
+        "docs/proposal.pdf"
 
-rule compile_abstract:
+rule compile_tex:
     input:
         code="code/compile_tex.sh",
-        tex="submission/abstract.tex",
-        pre="preamble.tex"
-    output:
-        pdf="docs/{filename}.pdf"
-    shell:
-        """
-        bash {input.code} {input.tex} {output.pdf} {wildcards.filename}
-        """
-
-rule compile_proposal:
-    input:
-        code="code/compile_tex.sh",
-        tex="submission/proposal.tex",
+        tex="submission/{filename}.tex",
         pre="preamble.tex",
         bib="prelim.bib"
     output:
-        pdf="docs/proposal.pdf"
+        pdf="docs/{filename}.pdf"
     shell:
         """
         bash {input.code} {input.tex} {output.pdf} {wildcards.filename}
