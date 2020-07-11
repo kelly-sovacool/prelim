@@ -1,14 +1,15 @@
 rule targets:
     input:
         "README.md",
-        "docs/proposal.pdf"
+        "docs/proposal.pdf",
+        "docs/presentation.html"
 
 rule compile_tex:
     input:
         code="code/compile_tex.sh",
         tex="submission/{filename}.tex",
-        pre="preamble.tex",
-        bib="prelim.bib"
+        pre="submission/preamble.tex",
+        bib="submission/prelim.bib"
     output:
         pdf="docs/{filename}.pdf"
     shell:
@@ -24,6 +25,17 @@ rule render_readme:
         file="README.md"
     params:
         format="github_document"
+    script:
+        "{input.code}"
+
+rule render_slides:
+    input:
+        code="code/render.R",
+        rmd="submission/presentation.Rmd"
+    output:
+        file="docs/presentation.html"
+    params:
+        format="xaringan::moon_reader"
     script:
         "{input.code}"
 
