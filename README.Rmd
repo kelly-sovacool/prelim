@@ -24,3 +24,22 @@ knitr::opts_chunk$set(
 | Proposal | [PDF](docs/proposal.pdf) | [TeX](submission/proposal.tex) |
 | Presentation | [HTML] | [Rmd] |
 
+## Dataset
+
+```{r}
+library(dplyr)
+metadata <- readxl::read_excel(here::here('data', 'GLNE07samples_baxter.xlsx'))
+nrow(metadata)
+metadata %>% 
+    group_by(Diagnosis) %>% 
+    summarize(n = n())
+
+metadata %>%
+    filter(Diagnosis != 'Pending', !is.na(Diagnosis)) %>% 
+    mutate(Diagnosis = recode(Diagnosis,  
+                              `High Risk Normal` = 'Normal')
+           ) %>% 
+    group_by(Diagnosis) %>% 
+    summarize(n = n())
+```
+
