@@ -31,7 +31,6 @@ nrow(metadata)
 metadata %>% 
     group_by(Diagnosis) %>% 
     summarize(n = n())
-#> `summarise()` ungrouping output (override with `.groups` argument)
 #> # A tibble: 6 x 2
 #>   Diagnosis            n
 #>   <chr>            <int>
@@ -49,7 +48,6 @@ metadata %>%
            ) %>% 
     group_by(Diagnosis) %>% 
     summarize(n = n())
-#> `summarise()` ungrouping output (override with `.groups` argument)
 #> # A tibble: 3 x 2
 #>   Diagnosis     n
 #>   <chr>     <int>
