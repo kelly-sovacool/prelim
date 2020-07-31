@@ -4,17 +4,30 @@ rule targets:
         "docs/proposal.pdf",
         "docs/presentation.html"
 
-rule compile_tex:
+rule compile_proposal:
     input:
         code="code/compile_tex.sh",
-        tex="submission/{filename}.tex",
+        tex="submission/proposal.tex",
         pre="submission/preamble.tex",
-        bib="submission/prelim.bib"
+        bib="submission/prelim.bib",
+        abs="submission/abstract.tex"
     output:
-        pdf="docs/{filename}.pdf"
+        pdf="docs/proposal.pdf"
     shell:
         """
-        bash {input.code} {input.tex} {output.pdf} {wildcards.filename}
+        bash {input.code} {input.tex} {output.pdf} proposal
+        """
+
+rule compile_abstract:
+    input:
+        code="code/compile_tex.sh",
+        tex="submission/abstract.tex",
+        pre="submission/preamble.tex"
+    output:
+        pdf="docs/abstract.pdf"
+    shell:
+        """
+        bash {input.code} {input.tex} {output.pdf} abstract
         """
 
 rule render_readme:
