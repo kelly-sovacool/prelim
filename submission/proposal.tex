@@ -27,6 +27,13 @@ no one agrees on exact definition of functional redundancy \cite{louca_function_
 ``Stability in ecosystem function with increasing microbial diversity is often considered an empirical indication of functional redundancy''
 \cite{royalty_quantitative_2020}
 
+
+trait contribution evenness (TCE): ``the evenness in relative contribution of that trait among taxa within the community... This definition has several appealing properties including: TCE is an extension of established diversity theory, functional redundancy measurements from communities with different richness and relative trait contribution by taxa are easily comparable, and any quantifiable trait data (genes copies, protein abundance, transcript copies, respiration rates, etc.) is suitable for analysis.'' \cite{royalty_quantitative_2020}
+
+``Functional redundancy is a measure of the number of different populations within a community that are able to perform the same functions. Functional redundancy can increase functional resilience, in case perturbations affect the taxonomic community structure; this allows for a return to community function, and therefore can increase stability.'' \cite{heintz-buschart_human_2018}
+
+``This functional redundancy is further reflected in the fraction of the observed microbial community capable of participating in each metabolic step, with no statistically significant difference between the boreholes, except for ammonia oxidation (Figure 6).'' (used Student's t-test and Wilcoxon rank sum) \cite{tully_dynamic_2018}
+
 \section*{Significance} % 1/2 page
 
 
@@ -34,57 +41,43 @@ no one agrees on exact definition of functional redundancy \cite{louca_function_
 
 \subsection*{Aim 1. Functional redundancy of the gut microbiome}
 
-\subsubsection*{1A) Build profiles of taxonomic composition and functional gene potential of CRC and non-cancerous samples.}
+\subsubsection*{1A) Build profiles of taxonomic composition and functional gene potential.}
+
+16S, mothur
+
+metagenomics, humann2
 
 \subsubsection*{1B) Determine presence and degree of functional redundancy in CRC and non-cancerous gut microbiomes.}
 
-trait contribution evenness (TCE): ``the evenness in relative contribution of that trait among taxa within the community... This definition has several appealing properties including: TCE is an extension of established diversity theory, functional redundancy measurements from communities with different richness and relative trait contribution by taxa are easily comparable, and any quantifiable trait data (genes copies, protein abundance, transcript copies, respiration rates, etc.) is suitable for analysis.'' \cite{royalty_quantitative_2020}
-it's just like Shannon index if you used alpha=1.
-
-how to quantify fcnl redundancy overall within and between disease states?
-pairwise comparison of TCE for all traits?
-for each trait, compare median TCE among cancer vs non-cancer samples?
-what statistical test to use?
-
-should consider each trait a function, i.e. metabolic pathway, \textit{not} a gene.
-
-instead of TCE, consider using the fraction of taxa that are capable of producing the trait?
-
-``Functional redundancy is a measure of the number of different populations within a community that are able to perform the same functions. Functional redundancy can increase functional resilience, in case perturbations affect the taxonomic community structure; this allows for a return to community function, and therefore can increase stability.'' \cite{heintz-buschart_human_2018}
-
-``This functional redundancy is further reflected in the fraction of the observed microbial community capable of participating in each metabolic step, with no statistically significant difference between the boreholes, except for ammonia oxidation (Figure 6).'' (used Student's t-test and Wilcoxon rank sum) \cite{tully_dynamic_2018}
-if no sig diff, then the communities are redundant for that function. count number of redundant functions?
-
-Use TCE; compare TCE between communities just like Shannon diversity are compared in Hannigan paper. box plot of TCE for traits (potential functions / pathways) for cancer vs healthy per trait. ``the statistical significance of results of comparisons between the disease state clusters was assessed using analysis of similarity (ANOSIM) with a post hoc multivariate Tukey test.'' \cite{hannigan_diagnostic_2018}
-however, with Hannigan paper, there is 1 Shannon index per community. did he do ANOSIM on bray-curtis only, or also on Shannon div? did he do ANOSIM on differences in mean Shannon diversities?
-for this, there will be 1 TCE per trait per community. Do statistical test for every trait?
-idea: for each trait, calc mean TCE in groups (mean cancer TCE and mean non-cancer TCE), do Wilcoxon rank-sum test for significance? - similar to ANCOM? 
-or do Wilcoxon rank-sum on proportion of community capabable of performing each function, like \cite{tully_dynamic_2018}?
-
-Why not look at Jaccard index of traits (potential functions / pathways) to get at beta div?
-probably jaccard and not bray-curtis because bray takes abundance into account, but pathway presense weighted by taxa abundance might not correspond to actual abundance of gene products. that may stretch limits of functional potential.
-ANOSIM on pairwise jaccard dissimilarity.
-
-How does humann2 recommend comparing fcnl potential b/e communities?
+How humann2 paper assessed fcnl potential w/in and b/e communities:
 Calculate diversity metrics on function abundances to find "contributional diversity".
 Alpha (within-sample): Gini-Simpson. Beta (between-sample): Bray-Curtis.
 Fig 2A in \cite{franzosa_species-level_2018} plotted beta vs alpha for samples.
-I'd like to do ANOSIM + NMDS on Bray-Curtis distances.
+I'll do Wilcoxon rank-sum on Gini-Simpson, and ANOSIM + NMDS on Bray-Curtis distances with a post hoc multivariate Tukey test.'' \cite{hannigan_diagnostic_2018}
 
 \subsubsection*{1C) Build and compare CRC classification models with taxonomic composition and functional gene potential.}
 
+random forest or logistic regression
 
 \subsection*{Aim 2. Integrating active metabolites with functional gene potential}
 
 \subsubsection*{2A) Annotate compounds from untargeted mass spectrometry and select known products of bacterial metabolism.}
 
+GNPS
+
+inspired by AMON, but use MetaCyc instead of KEGG (MetaCyc has more pathways)
+
 \subsubsection*{2B) Calculate the intersection of pathways from active metabolites and functional potential profiles.}
 
 \subsubsection*{2C) Build and compare CRC classification models with all potential pathways or only confirmed active pathways.}
 
+random forest or logistic regression
 
 \section*{Potential Outcomes and Conclusions}
 
+limitation: genes with unknown functions
+
+limitation: mass-spec features with unknown identity
 
 \pagebreak
 \bibliographystyle{submission/nihunsrt} % downloaded from https://www.latextemplates.com/template/nih-grant-proposal
