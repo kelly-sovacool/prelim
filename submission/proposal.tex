@@ -58,13 +58,18 @@ if no sig diff, then the communities are redundant for that function. count numb
 Use TCE; compare TCE between communities just like Shannon diversity are compared in Hannigan paper. box plot of TCE for traits (potential functions / pathways) for cancer vs healthy per trait. ``the statistical significance of results of comparisons between the disease state clusters was assessed using analysis of similarity (ANOSIM) with a post hoc multivariate Tukey test.'' \cite{hannigan_diagnostic_2018}
 however, with Hannigan paper, there is 1 Shannon index per community. did he do ANOSIM on bray-curtis only, or also on Shannon div? did he do ANOSIM on differences in mean Shannon diversities?
 for this, there will be 1 TCE per trait per community. Do statistical test for every trait?
-idea: for each trait, calc mean TCE in groups (mean cancer TCE and mean non-cancer TCE), do Mann-Whitney-Wilcoxon test for significance? (https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test) - similar to ANCOM?
+idea: for each trait, calc mean TCE in groups (mean cancer TCE and mean non-cancer TCE), do Wilcoxon rank-sum test for significance? - similar to ANCOM? 
+or do Wilcoxon rank-sum on proportion of community capabable of performing each function, like \cite{tully_dynamic_2018}?
 
 Why not look at Jaccard index of traits (potential functions / pathways) to get at beta div?
 probably jaccard and not bray-curtis because bray takes abundance into account, but pathway presense weighted by taxa abundance might not correspond to actual abundance of gene products. that may stretch limits of functional potential.
 ANOSIM on pairwise jaccard dissimilarity.
 
 How does humann2 recommend comparing fcnl potential b/e communities?
+Calculate diversity metrics on function abundances to find "contributional diversity".
+Alpha (within-sample): Gini-Simpson. Beta (between-sample): Bray-Curtis.
+Fig 2A in \cite{franzosa_species-level_2018} plotted beta vs alpha for samples.
+I'd like to do ANOSIM + NMDS on Bray-Curtis distances.
 
 \subsubsection*{1C) Build and compare CRC classification models with taxonomic composition and functional gene potential.}
 
