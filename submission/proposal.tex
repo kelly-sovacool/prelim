@@ -20,6 +20,8 @@
 
 genetics and environmental factors explain only a small proportion of disease incidence, so we turn to the microbiome \cite{thomas_metagenomic_2019}.
 
+``it is not possible to classify individuals as having healthy colons or screen relevant neoplasia using Bray- Curtis distances based on the 16S rRNA gene sequences collected from fecal samples (see Fig. S1 in the supplemental material). This variation is likely due to the ability of many bacterial populations to fill the same niche such that different populations cause the same disease in different individuals. Furthermore, a growing number of studies have shown that it is rare for a single bacterial species to be associated with a disease. Instead, subsets of the microbiome account for differences in health.'' \cite{topcuoglu_framework_2020}
+
 other studies found specifical potential functional pathways that are CRC biomarkers, especially choline metabolism pathway \cite{thomas_metagenomic_2019}.
 
 
@@ -82,7 +84,9 @@ Maybe do Wilcoxon rank-sum on Gini-Simpson, and ANOSIM + NMDS on Bray-Curtis dis
 
 \subsubsection*{1C) Build and compare CRC classification models with taxonomic composition and functional gene potential.}
 
-random forest or logistic regression
+Random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
+The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
+The dataset will be randomly split into 80\% training and 20\% testing sets, stratified to maintain the proportion of CRC to non-cancerous samples.
 
 \subsection*{Aim 2. Integrating active metabolites with functional gene potential}
 
