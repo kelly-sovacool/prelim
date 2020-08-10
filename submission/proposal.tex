@@ -18,8 +18,14 @@
 
 \section*{Background and Motivation} % 1/2 - 1 page
 
+genetics and environmental factors explain only a small proportion of disease incidence, so we turn to the microbiome \cite{thomas_metagenomic_2019}.
+
+other studies found specifical potential functional pathways that are CRC biomarkers, especially choline metabolism pathway \cite{thomas_metagenomic_2019}.
+
 
 we don't know enough about functional redundancy in the human gut microbiome \cite{heintz-buschart_human_2018}
+
+``Community-level function is often more conserved than community composition15,39–41, con- sistent with a functional repertoire ‘defining’ a niche and satisfied by different microbial assemblages.'' \cite{franzosa_species-level_2018}
 
 many published studies claiming to have found functional redundancies in microbial systems lack quantitative analyses of redundancy \cite{souza_metagenomic_2015, ferrer_microbiota_2013}.
 
@@ -43,9 +49,24 @@ trait contribution evenness (TCE): ``the evenness in relative contribution of th
 
 \subsubsection*{1A) Build profiles of taxonomic composition and functional gene potential.}
 
-16S, mothur
+16S rRNA gene sequencing was previously performed on stool samples from patients in the GLNE 007 cohort for classification modeling to detect CRC \cite{baxter_microbiota-based_2016}.
+Since then, additional samples have been collected and sequenced, bringing the total dataset to 211 CRC and 223 non-cancerous samples.
+Sequences will be processed with mothur according to the MiSeq SOP \cite{schloss_introducing_2009, kozich_development_2013}.
+Briefly, processing steps include filtering for quality, removing chimeric sequences, clustering sequences into OTUs using the \textit{de novo} OptiClust method with a similarity threshold of 97\%,
+and generating a table of OTU abundances by samples \cite{westcott_opticlust_2017}.
+Abundances will be rarefied and converted to relative abundances to circumvent biases in sampling depth across samples.
+This final OTU abundance table will serve as the taxonomic composition profiles of each community.
 
-metagenomics, humann2
+Whole metagenome shotgun sequencing will be performed and metagenomes will be processed with HUMAnN2 \cite{franzosa_species-level_2018} to characterize functional potential of the CRC and non-cancerous microbial communities.
+Sequences will be filtered and trimmed for quality prior to processing with HUMAnN2.
+HUMAnN2 uses MetaPhlan2 to screen sequences against a curated reference of 400,000 clade-specific marker genes to detect the microbial species present in each sample \cite{segata_metagenomic_2012}.
+This strategy is assembly-free and saves considerable computational resources over assembly-based methods.
+Next, sequences are mapped to annotated reference genomes to identify the gene families defined by Uniref90 and the metabolic pathways defined by Metacyc \cite{capsi_metacyc_2017} that are encoded by each community.
+MinPath pares down the list of metabolic pathways to the minimum set that can be explained by the genes encoded in each metagenome \cite{ye_parsimony_2009}.
+The end result is a conservative table of metabolic pathways encoded by each microbial community and their abundances.
+As with OTU abundances, pathway abundances will be converted to relative abundances.
+This table of pathway abundances will serve as the functional potential profiles of each community.
+
 
 \subsubsection*{1B) Determine presence and degree of functional redundancy in CRC and non-cancerous gut microbiomes.}
 
@@ -53,7 +74,11 @@ How humann2 paper assessed fcnl potential w/in and b/e communities:
 Calculate diversity metrics on function abundances to find "contributional diversity".
 Alpha (within-sample): Gini-Simpson. Beta (between-sample): Bray-Curtis.
 Fig 2A in \cite{franzosa_species-level_2018} plotted beta vs alpha for samples.
-I'll do Wilcoxon rank-sum on Gini-Simpson, and ANOSIM + NMDS on Bray-Curtis distances with a post hoc multivariate Tukey test.'' \cite{hannigan_diagnostic_2018}
+
+``A function contributed by a single species has low within-sample (‘simple’) contributional diversity, while a function with many equal contributors has high within-sample (‘complex’) contributional diversity. If a function is contributed by the same assemblage of species across samples, it has low between-sample (‘conserved’) contributional diversity, whereas a function contributed by different assemblages has high between-sample (‘variable’) contributional diversity.'' \cite{franzosa_species-level_2018}
+
+
+Maybe do Wilcoxon rank-sum on Gini-Simpson, and ANOSIM + NMDS on Bray-Curtis distances with a post hoc multivariate Tukey test. \cite{hannigan_diagnostic_2018}
 
 \subsubsection*{1C) Build and compare CRC classification models with taxonomic composition and functional gene potential.}
 
