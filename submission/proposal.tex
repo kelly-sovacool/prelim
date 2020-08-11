@@ -71,7 +71,7 @@ Whole metagenome shotgun sequencing will be performed and metagenomes will be pr
 Sequences will be filtered and trimmed for quality prior to processing with HUMAnN2.
 HUMAnN2 uses MetaPhlan2 to screen sequences against a curated reference of 400,000 clade-specific marker genes to detect the microbial species present in each sample \cite{segata_metagenomic_2012}.
 This strategy is assembly-free and saves considerable computational resources over assembly-based methods.
-Next, sequences are mapped to annotated reference genomes to identify the gene families defined by Uniref90 and the metabolic pathways defined by MetaCyc \cite{capsi_metacyc_2017} that are encoded by each community.
+Next, sequences are mapped to annotated reference genomes to identify the gene families defined by Uniref90 and the metabolic pathways defined by MetaCyc \cite{capsi_metacyc_2018} that are encoded by each community.
 The MetaCyc database contains pathways involving both primary and secondary metabolism and can be filtered by the domain of life.
 MinPath pares down the list of metabolic pathways to the minimum set that can be explained by the genes encoded in each metagenome \cite{ye_parsimony_2009}.
 The end result is a conservative table of metabolic pathways encoded by each microbial community and their abundances.
@@ -80,6 +80,10 @@ This table of pathway abundances will serve as the functional potential profiles
 
 
 \paragraph{1B) Functional redundancy in CRC and non-cancerous gut microbiomes.}
+
+The Bray-Curtis dissimilarity index will be calculated on OTU abundances for all pairwise comparisons of communities as a metric of taxonomic beta diversity \cite{bray_ordination_1957}. The Bray-Curtis dissimilarity is calculated as follows:
+
+Where
 
 How humann2 paper assessed fcnl potential w/in and b/e communities:
 Calculate diversity metrics on function abundances to find "contributional diversity".
@@ -96,13 +100,16 @@ Maybe do Wilcoxon rank-sum on Gini-Simpson, and ANOSIM + NMDS on Bray-Curtis dis
 Binary random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
 The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
 The dataset will be randomly split into 80\% training and 20\% testing sets, stratified to maintain the proportion of CRC to non-cancerous samples.
-The mtry hyperparameter, which is the number of features used in each tree split, will be tuned to maximize the mean area under the receiver operating characteristic curve (AUC)with 5-fold cross-validation.
+The mtry hyperparameter, which is the number of features used in each tree split, will be tuned to maximize the mean area under the receiver operating characteristic curve (AUC) with 5-fold cross-validation.
 Each model will then be trained with the best mtry value and the test AUC will be calculated with the held-out test data.
 These steps will be repeated for 100 iterations and the test AUCs will be recorded.
-The statistical significance of differences in mean AUC between the three types of models will be evaluated with a pairwise Wilcoxon test with Bonferroni-corrected P values for comparisons among the three models \cite{hannigan_diagnostic_2018}.
+The statistical significance of differences in mean AUCs between the three types of models will be evaluated with a pairwise Wilcoxon test with Bonferroni-corrected P values for comparisons among the three models \cite{hannigan_diagnostic_2018}.
+The Wilcoxon test is appropriate because for each model, there is a mean AUC for each data split, thus the mean AUCs are matched by data splits.
 Permutation importance will be performed to determine which features (OTUs and pathways) have the greatest influence over model performance, which implies their importance as CRC biomarkers.
 These methods have been lauded as best practices for building OTU-based machine learning models \cite{topcuoglu_framework_2020} and are currently being implemented in an R package (https://github.com/SchlossLab/mikRopML).
 To reduce the runtime, these tasks will run in parallel where possible on the Great Lakes HPC cluster.
+
+TODO RF model performance on 490 dataset with adenoma
 
 \subsection*{Aim 2. Integrating active metabolites with functional gene potential}
 
@@ -111,15 +118,27 @@ To reduce the runtime, these tasks will run in parallel where possible on the Gr
 Untargeted liquid chromatography tandem mass spectrometry (LC-MS/MS) will be performed on stool samples to determine the functions actively performed by the bacterial community.
 LC-MS/MS spectra will be processed with the Global Natural Products Social Molecular Networking (GNPS) a popular web-based tool for processing, annotating, and sharing tandem mass spectrometry data \cite{wang_sharing_2016}.
 GNPS queries spectra against all reference spectra accumulated in GNPS libraries to find exact matches and annotate known compounds.
-The spectral search outputs structures, which will be converted to International Chemical Identifiers (InChi) through the GNPS API. MetaCyc has tool to convert InChi to other ids.
-
-inspired by AMON, but use MetaCyc instead of KEGG (MetaCyc has more pathways)
+The spectral search outputs structures of known annotated metabolites represented by spectra, which will be converted to International Chemical Identifiers (InChi) through the GNPS API for compatibility with the MetaCyc database.
+It is important to note that stool samples contain metabolites which can be derived from host metabolism, microbial metabolism, both, or neither.
+The functional potential from metagenomes provides an avenue to identify which metabolites are likely products of microbial metabolism.
 
 \paragraph{2B) Find overlapping pathways from active metabolites and functional potential profiles.}
 
+The IDs of metabolic products of all pathways encoded in the metagenomes of each microbial community (functional potential profiles) will be queried from the MetaCyc database to create a set of potential metabolites.
+The set of potential metabolites will be intersected with the set of metabolites annotated in LC-MS/MS.
+The intersection of these sets represents known metabolites which are 1) known to be products of bacterial metabolism in general and 2) capable of being produced by members of these specific microbial communities.
+This set intersection would exclude metabolites that are not known to be capable of being produced by microbes, i.e. any metabolites that are only produced by human metabolism or from outside sources such as the host diet.
+A
+This method is inspired by AMON, which uses KEGG KOs rather than the MetaCyc database to putatively annotate the origins of metabolites in integrated metagenomic and metabolimic experiments \cite{shaffer_amon_2019}.
+MetaCyc will be used here because it is already integrated with the HUMAnN2 tool for profiling functional potential and contains more metabolic pathways than the KEGG database \cite{capsi_metacyc_2018}.
+
 \paragraph{2C) CRC classification models with potential or confirmed active pathways.}
 
-random forest or logistic regression
+Binary random forest models to classify samples as CRC or non-cancerous will be built in a similar manner as described in Aim 1C, but with model features as potential metabolic pathways identified by HUMAnN2 or using only confirmed active metabolic pathways confirmed with LC-MS/MS.
+Features will be coded as binary variables with 1 for pathway presence and 0 for pathway absence.
+Best practices for model training and evaluation will be performed as described above including splitting training and testing data, tuning the mtry hyperparameter with 5-fold cross validation, calculating AUCs of each model on the held-out test data, and repeating these steps for 100 iterations.
+The statistical significance of differences in mean AUC between the two types of models will be evaluated with a Wilcoxon test.
+Finally, permutation importance will be performed to determine which metabolic pathways were most important for classification model performance.
 
 \section*{Potential Outcomes and Conclusions}
 
@@ -128,6 +147,8 @@ limitation: genes with unknown functions
 limitation: mass-spec features with unknown identity
 
 limitation: not time-series
+
+limitation: metabolites could be capable of being produced by microbes, but actually weren't being produced in the community at the time of sampling.
 
 \pagebreak
 \bibliographystyle{submission/nihunsrt} % downloaded from https://www.latextemplates.com/template/nih-grant-proposal
