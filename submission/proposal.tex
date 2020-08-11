@@ -30,6 +30,9 @@ genetics and environmental factors explain only a small proportion of disease in
     \end{center}
 \end{wrapfigure}
 
+
+previous study with n=10 CRC and normal. did 16S + untargeted metab. no sig difs in taxonomic comp. did find difs in metabolites. \cite{weir_stool_2013}
+
 other studies found specifical potential functional pathways that are CRC biomarkers, especially choline metabolism pathway \cite{thomas_metagenomic_2019}.
 
 
@@ -49,6 +52,7 @@ trait contribution evenness (TCE): ``the evenness in relative contribution of th
 ``Functional redundancy is a measure of the number of different populations within a community that are able to perform the same functions. Functional redundancy can increase functional resilience, in case perturbations affect the taxonomic community structure; this allows for a return to community function, and therefore can increase stability.'' \cite{heintz-buschart_human_2018}
 
 ``This functional redundancy is further reflected in the fraction of the observed microbial community capable of participating in each metabolic step, with no statistically significant difference between the boreholes, except for ammonia oxidation (Figure 6).'' (used Student's t-test and Wilcoxon rank sum) \cite{tully_dynamic_2018}
+
 
 \section*{Significance} % 1/2 page
 
@@ -71,9 +75,9 @@ Whole metagenome shotgun sequencing will be performed and metagenomes will be pr
 Sequences will be filtered and trimmed for quality prior to processing with HUMAnN2.
 HUMAnN2 uses MetaPhlan2 to screen sequences against a curated reference of 400,000 clade-specific marker genes to detect the microbial species present in each sample \cite{segata_metagenomic_2012}.
 This strategy is assembly-free and saves considerable computational resources over assembly-based methods.
-Next, sequences are mapped to annotated reference genomes to identify the gene families defined by Uniref90 and the metabolic pathways defined by MetaCyc \cite{capsi_metacyc_2018} that are encoded by each community.
+Next, sequences are mapped to annotated reference genomes to identify the gene families defined by Uniref90 and the metabolic pathways defined by MetaCyc \cite{caspi_metacyc_2018} that are encoded by each community.
 The MetaCyc database contains pathways involving both primary and secondary metabolism and can be filtered by the domain of life.
-MinPath pares down the list of metabolic pathways to the minimum set that can be explained by the genes encoded in each metagenome \cite{ye_parsimony_2009}.
+MinPath pares down the list of metabolic pathways to the minimum set that can be explained by the genes encoded in each metagenome in order to avoid overestimating the pathways present \cite{ye_parsimony_2009}.
 The end result is a conservative table of metabolic pathways encoded by each microbial community and their abundances.
 As with OTU abundances, pathway abundances will be converted to relative abundances.
 This table of pathway abundances will serve as the functional potential profiles of each community.
@@ -81,19 +85,40 @@ This table of pathway abundances will serve as the functional potential profiles
 
 \paragraph{1B) Functional redundancy in CRC and non-cancerous gut microbiomes.}
 
-The Bray-Curtis dissimilarity index will be calculated on OTU abundances for all pairwise comparisons of communities as a metric of taxonomic beta diversity \cite{bray_ordination_1957}. The Bray-Curtis dissimilarity is calculated as follows:
+Beta diversity is the difference in taxonomic composition between communities.
+The Bray-Curtis dissimilarity index will be calculated on OTU relative abundances for all pairwise comparisons of samples as a measure of beta diversity \cite{bray_ordination_1957}.
+For relative abundances, where the OTU abundances sum to 1 in each sample, the Bray-Curtis dissimilarity between a pair of samples is as follows:
 
-Where
+$$b_{i i^\prime } = \frac{1}{2} \sum_{j}^J | r_{ij} - r_{i^\prime j} |$$
 
-How humann2 paper assessed fcnl potential w/in and b/e communities:
-Calculate diversity metrics on function abundances to find "contributional diversity".
-Alpha (within-sample): Gini-Simpson. Beta (between-sample): Bray-Curtis.
-Fig 2A in \cite{franzosa_species-level_2018} plotted beta vs alpha for samples.
+where the relative abundance of OTU $j$ in sample $i$ is $r_{ij}$ and the Bray-Curtis index between samples $i$ and $i^\prime$ is $b_{i i^\prime }$.
+This can also be expressed as 1 minus the sum of the lesser abundances of OTUs that the samples have in common, which is equivalent to the above formula when applied to relative abundances \cite{greenacre_multivariate_2014}.
+The range is 0 to 1, with 0 meaning the samples share all the same OTUs at equal abundance and 1 meaning the samples share no OTUs.
+The Bray-Curtis index is preferred over the Jaccard index because the Jaccard index only takes presence and absence of OTUs into account, while Bray-Curtis also uses abundance data such that OTUs of higher abundance have greater influence over the diversity index than rarer OTUs.
 
-``A function contributed by a single species has low within-sample (‘simple’) contributional diversity, while a function with many equal contributors has high within-sample (‘complex’) contributional diversity. If a function is contributed by the same assemblage of species across samples, it has low between-sample (‘conserved’) contributional diversity, whereas a function contributed by different assemblages has high between-sample (‘variable’) contributional diversity.'' \cite{franzosa_species-level_2018}
+Analysis of Similarity (ANOSIM) will be performed on the pairwise dissimilarity matrix of samples to test whether the similarity in taxonomic composition between disease states is greater than or equal to the similarity within disease states. \cite{clarke_non-parametric_1993}
+To perform ANOSIM, all pairwise dissimilarities are ranked in order from most to least similar.
+The average rank similarities of samples betweens sites ($\bar{r_B}$) and within sites ($\bar{r_W}$) are computed, and the test statistic $R$ is then computed as:
 
+$$R = \frac{ \bar{r_B} - \bar{r_W} }{ \frac{1}{4} n(n-1) }$$
 
-Maybe do Wilcoxon rank-sum on Gini-Simpson, and ANOSIM + NMDS on Bray-Curtis distances with a post hoc multivariate Tukey test. \cite{hannigan_diagnostic_2018}
+with $n$ as the total number of samples.
+The $R$ statistic ranges from -1 to 1, with 1 representing greatest similarity within sites, -1 representing greatest similarity between sites, and 0 representing no difference.
+A permutation test will then be performed to determine the significance.
+The sample disease states will be permuted and $R$ will be calculated again for each permutation.
+The null hypothesis is that the disease states are interchangeable, i.e. that the similarity in taxonomic composition between disease states is greater than or equal to the similarity within disease states.
+The fraction of permutation $R$s that are less than or equal to the observed $R$ is the $P$ value.
+Previous studies have not found significant differences in beta diversity between CRC and non-cancerous communities, and that result is expected here as well \cite{weir_stool_2013, hannigan_diagnostic_2018, topcuoglu_framework_2020}.
+A Non-metric Multidimensional Scaling (NMDS) plot will be created to visualize the Bray-Curtis dissimilarities and accompany the ANOSIM test.
+
+While beta diversity metrics are traditionally applied to taxa abundance data,
+they can also be applied to other types of abundance data such as functional potential profiles \cite{franzosa_species-level_2018}.
+Bray-Curtis dissimilarity will be calculated on metabolic pathway relative abundances for all pairwise comparisons of samples.
+
+anosim + nmds on pathway abundances
+
+compare taxonomic vs functional anosim
+
 
 \paragraph{1C) CRC classification models with taxonomic composition or functional potential.}
 
@@ -128,9 +153,8 @@ The IDs of metabolic products of all pathways encoded in the metagenomes of each
 The set of potential metabolites will be intersected with the set of metabolites annotated in LC-MS/MS.
 The intersection of these sets represents known metabolites which are 1) known to be products of bacterial metabolism in general and 2) capable of being produced by members of these specific microbial communities.
 This set intersection would exclude metabolites that are not known to be capable of being produced by microbes, i.e. any metabolites that are only produced by human metabolism or from outside sources such as the host diet.
-A
 This method is inspired by AMON, which uses KEGG KOs rather than the MetaCyc database to putatively annotate the origins of metabolites in integrated metagenomic and metabolimic experiments \cite{shaffer_amon_2019}.
-MetaCyc will be used here because it is already integrated with the HUMAnN2 tool for profiling functional potential and contains more metabolic pathways than the KEGG database \cite{capsi_metacyc_2018}.
+MetaCyc will be used here because it is already integrated with the HUMAnN2 tool for profiling functional potential, it contains more metabolic pathways than the KEGG database, and the KEGG database can no longer be downloaded in its entirety for free \cite{caspi_metacyc_2020}.
 
 \paragraph{2C) CRC classification models with potential or confirmed active pathways.}
 
@@ -144,7 +168,7 @@ Finally, permutation importance will be performed to determine which metabolic p
 
 limitation: genes with unknown functions
 
-limitation: mass-spec features with unknown identity
+limitation: mass-spec features with unknown identity. Some have claimed that only ~2\% of spectra can be annotated in untargeted mass spectrometry experiments \cite{de_silva_illuminating_2015}.
 
 limitation: not time-series
 
