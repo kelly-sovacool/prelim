@@ -18,6 +18,15 @@
 
 \section*{Background and Motivation} % 1/2 - 1 page
 
+Many studies have observed changes in the composition of gut microbiota in CRC \cite{kostic_genomic_2012, chen_decreased_2013}.
+Thus, there is great interest in identifying microbial biomarkers to improve our understanding of CRC and to improve early diagnostic tests.
+Experiments in mouse models have found...
+These findings imply that microbiome changes occur not only as a response to CRC,
+but may actually drive disease etiology.
+...toxigenic products
+
+hannigan rf implies biological significance
+
 genetics and environmental factors explain only a small proportion of disease incidence, so we turn to the microbiome \cite{thomas_metagenomic_2019}.
 
 ``it is not possible to classify individuals as having healthy colons or screen relevant neoplasia using Bray- Curtis distances based on the 16S rRNA gene sequences collected from fecal samples (see Fig. S1 in the supplemental material). This variation is likely due to the ability of many bacterial populations to fill the same niche such that different populations cause the same disease in different individuals. Furthermore, a growing number of studies have shown that it is rare for a single bacterial species to be associated with a disease. Instead, subsets of the microbiome account for differences in health.'' \cite{topcuoglu_framework_2020} (Fig. \ref{fig:nmds_otu})
@@ -140,6 +149,7 @@ would imply the presence of functional redundancy \textit{within} disease states
 Binary random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
 The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
 A more recent study comparing modeling methods for OTU-based classification of screen relevant neoplasia (SRN; includes adenoma and carcinoma) found that random forest performed better than other methods including logistic regression, but not significantly so (see Fig. \ref{fig:rf}) \cite{topcuoglu_framework_2020}.
+Prior to training, features will be filtered to remove any OTUs and pathways with near-zero variance, as these are not likely to be informative and would only increase training time.
 The dataset will be randomly split into 80\% training and 20\% testing sets, stratified to maintain the proportion of CRC to non-cancerous samples.
 The mtry hyperparameter, which is the number of features used in each tree split, will be tuned to maximize the mean area under the receiver operating characteristic curve (AUROC) with 5-fold cross-validation.
 ROC plots the true positive rate over the false positive rate, while AUROC is interpreted as the chance of classification accuracy.
