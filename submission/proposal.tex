@@ -18,16 +18,35 @@
 
 \section*{Background and Motivation} % 1/2 - 1 page
 
-Many studies have observed changes in the composition of gut microbiota in CRC \cite{kostic_genomic_2012, chen_decreased_2013}.
-Thus, there is great interest in identifying microbial biomarkers to improve our understanding of CRC and to improve early diagnostic tests.
-Experiments in mouse models have found...
+After lung cancer, colorectal cancer is the cause of the most cancer-related deaths worldwide \cite{ferlay_cancer_2015}.
+Genetic factors explain only a small proportion of CRC cases, and lifestyle-based factors such as diet and smoking status are common to many cancer types \cite{thomas_metagenomic_2019}.
+Many studies have observed changes in the composition of the gut microbiome in CRC, implicating microbes as potential risk factors, or at least as signatures that change in response to CRC \cite{kostic_genomic_2012, chen_decreased_2013}.
+Thus, there is great interest in identifying microbial biomarkers involved in CRC to improve our understanding of the disease and to develop improved diagnostic tests.
+Experiments in mouse models have found that treating germ-free mice with fecal matter transplants from CRC patients accelerated the progression from adenoma to carcinoma \cite{li_gut_2019, sobhani_colorectal_2019}.
+Additionally, toxigenic microbial gene products such as colibactin have been associated with human CRC gut microbiomes and experimentally tested as drivers of disease progression with mouse models \cite{cougnoux_bacterial_2013, gagnaire_collateral_2017, thakur_unveiling_2019}.
 These findings imply that microbiome changes occur not only as a response to CRC,
-but may actually drive disease etiology.
-...toxigenic products
+but may actually play a causative role in disease etiology.
 
-hannigan rf implies biological significance
+Whether the microbiome changes in response to CRC, plays a role in disease progression, or both,
+microbial biomarkers hold promise as a potential diagnostic tool.
+Colonoscopy is currently the most effective way to detect screen-relevant neoplasias (SRNs; adenomatous and cancerous lesions),
+which can then be biopsied during the same colonoscopy session for diagnostic confirmation.
+But despite its effectiveness, the cost and highly-invasive nature of colonoscopy cause low patient compliance \cite{ling_attitudes_2001, jones_patient-reported_2010}.
+The fecal immunochemical test (FIT), a quantitative measure of hemoglobin concentrations in stool,
+is currently the best non-invasive screening tool for SRNs, but has low sensitivity.
+OTU-based machine learning (ML) models have been developed that improve sensitivity when used in complement with FIT, demonstrating the feasibility of using microbiome-based markers for diagnosis \cite{baxter_microbiota-based_2016}.
 
-genetics and environmental factors explain only a small proportion of disease incidence, so we turn to the microbiome \cite{thomas_metagenomic_2019}.
+No single organism or gene has been indicated in all cases of CRC;
+rather, the activities of the microbial community as a whole seem to be implicated \cite{louis_gut_2014}.
+Taxonomic composition is often compared between communities by calculating beta diversity metrics such as the Bray-Curtis distance and plotting an ordination to visualize separation between groups, such as cancerous and healthy.
+One would think that if ML models can use taxonomic composition to classify samples as cancerous or healthy,
+that differences in taxonomic composition would also be reflected in an ordination.
+However, patient stool samples cannot be classified as having SRNs or not using beta diversity,
+as shown in the lack of distinct clustering in Fig. \ref{fig:nmds_otu}.
+also in the case of obesity
+
+hannigan: rf implies biological significance (see discussion section)
+
 
 ``it is not possible to classify individuals as having healthy colons or screen relevant neoplasia using Bray- Curtis distances based on the 16S rRNA gene sequences collected from fecal samples (see Fig. S1 in the supplemental material). This variation is likely due to the ability of many bacterial populations to fill the same niche such that different populations cause the same disease in different individuals. Furthermore, a growing number of studies have shown that it is rare for a single bacterial species to be associated with a disease. Instead, subsets of the microbiome account for differences in health.'' \cite{topcuoglu_framework_2020} (Fig. \ref{fig:nmds_otu})
 
@@ -60,9 +79,6 @@ we don't know enough about functional redundancy in the human gut microbiome \ci
 
 ``Community-level function is often more conserved than community composition, consistent with a functional repertoire ‘defining’ a niche and satisfied by different microbial assemblages.'' \cite{franzosa_species-level_2018}
 
-
-
-
 trait contribution evenness (TCE): ``the evenness in relative contribution of that trait among taxa within the community... This definition has several appealing properties including: TCE is an extension of established diversity theory, functional redundancy measurements from communities with different richness and relative trait contribution by taxa are easily comparable, and any quantifiable trait data (genes copies, protein abundance, transcript copies, respiration rates, etc.) is suitable for analysis.'' \cite{royalty_quantitative_2020}
 
 ``Functional redundancy is a measure of the number of different populations within a community that are able to perform the same functions. Functional redundancy can increase functional resilience, in case perturbations affect the taxonomic community structure; this allows for a return to community function, and therefore can increase stability.'' \cite{heintz-buschart_human_2018}
@@ -84,8 +100,8 @@ Since then, additional samples have been collected and sequenced, bringing the t
 Sequences will be processed with mothur according to the MiSeq SOP \cite{schloss_introducing_2009, kozich_development_2013}.
 Briefly, processing steps include filtering for quality, removing chimeric sequences, clustering sequences into OTUs using the \textit{de novo} OptiClust method with a similarity threshold of 97\%,
 and generating a table of OTU abundances by samples \cite{westcott_opticlust_2017}.
-Abundances will be rarefied and converted to relative abundances to circumvent biases in sampling depth across samples.
-This final OTU abundance table will serve as the taxonomic composition profiles of each community.
+Abundances will be rarefied and converted to relative abundances to circumvent biases in sampling depth across samples and represent the inherently compositional nature of next-generation sequencing data.
+This final OTU abundance table will serve as the taxonomic composition profiles of the gut microbial communities.
 
 Whole metagenome shotgun sequencing will be performed and metagenomes will be processed with HUMAnN2 \cite{franzosa_species-level_2018} to characterize functional potential of the CRC and non-cancerous microbial communities.
 Sequences will be trimmed for quality and reads aligning to the human reference genome will be filtered out prior to processing with HUMAnN2.
@@ -96,7 +112,7 @@ The MetaCyc database contains pathways involving both primary and secondary meta
 MinPath pares down the list of metabolic pathways to the minimum set that can be explained by the genes encoded in each metagenome in order to avoid overestimating the pathways present \cite{ye_parsimony_2009}.
 The end result is a conservative table of metabolic pathways encoded by each microbial community and their abundances.
 As with OTU abundances, pathway abundances will be converted to relative abundances.
-This table of pathway abundances will serve as the functional potential profiles of each community.
+This table of pathway abundances will serve as the functional potential profiles of the gut microbial communities.
 
 
 \paragraph{1B) Functional redundancy in CRC and non-cancerous gut microbiomes.}
