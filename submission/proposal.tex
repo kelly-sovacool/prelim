@@ -142,11 +142,11 @@ The random forest method has been found to perform well for microbiome-based cla
 A more recent study comparing modeling methods for OTU-based classification of screen relevant neoplasia (SRN; includes adenoma and carcinoma) found that random forest performed better than other methods including logistic regression, but not significantly so (see Fig. \ref{fig:rf}) \cite{topcuoglu_framework_2020}.
 The dataset will be randomly split into 80\% training and 20\% testing sets, stratified to maintain the proportion of CRC to non-cancerous samples.
 The mtry hyperparameter, which is the number of features used in each tree split, will be tuned to maximize the mean area under the receiver operating characteristic curve (AUROC) with 5-fold cross-validation.
-ROC plots the true positive rate over the false positive rate, while AUROC is interpreted as the chance that the model can distinguish between disease states.
+ROC plots the true positive rate over the false positive rate, while AUROC is interpreted as the chance of classification accuracy.
 Each model will then be trained with the best mtry value and the test AUROC will be calculated with the held-out test data.
-These steps will be repeated for 100 iterations and the test AUROCs will be recorded.
+These steps will be repeated for 100 iterations with a different training/testing data split each time, and the test AUROCs will be recorded.
 The statistical significance of differences in mean AUROCs between the three types of models will be evaluated with a pairwise Wilcoxon test with Bonferroni-corrected $P$ values for comparisons among the three models \cite{hannigan_diagnostic_2018}.
-The Wilcoxon test is appropriate because for each model, there is a mean AUROC for each data split, thus the mean AUROCs are matched by data splits.
+The Wilcoxon test is appropriate because for each data split, there is a mean AUROC for each model, thus the mean AUROCs are matched by data splits.
 Permutation importance will be performed to determine which features (OTUs and pathways) have the greatest influence over model performance, which implies their importance as CRC biomarkers.
 These methods have been lauded as best practices for building OTU-based machine learning models \cite{topcuoglu_framework_2020} and are currently being implemented in an R package (https://github.com/SchlossLab/mikRopML).
 To reduce the runtime, these tasks will be run in parallel where possible on the Great Lakes HPC cluster.
@@ -159,7 +159,7 @@ To reduce the runtime, these tasks will be run in parallel where possible on the
 Untargeted liquid chromatography tandem mass spectrometry (LC-MS/MS) will be performed on stool samples to determine the functions actively performed by the bacterial community.
 LC-MS/MS spectra will be processed with the Global Natural Products Social Molecular Networking (GNPS) a popular web-based tool for processing, annotating, and sharing tandem mass spectrometry data \cite{wang_sharing_2016}.
 GNPS queries spectra against all reference spectra accumulated in GNPS libraries to find exact matches and annotate known compounds \cite{aron_reproducible_2020}.
-As of 2016, GNPS had 18,163 compounds in its database, and trained users can contribute new spectra created from high quality standards.
+As of 2016, GNPS had 18,163 compounds in its database, and trained users can contribute new spectra created from high quality standards \cite{vargas_protocol_2019}.
 The spectral search outputs structures of known annotated metabolites represented by spectra, which will be converted to International Chemical Identifiers (InChi) through the GNPS API for compatibility with the MetaCyc database.
 It is important to note that stool samples contain metabolites which can be derived from host metabolism, microbial metabolism, both, or neither.
 The functional potential from metagenomes provides an avenue to identify which metabolites are likely products of microbial metabolism.
@@ -171,13 +171,15 @@ The set of potential metabolites will be intersected with the set of metabolites
 The intersection of these sets represents known metabolites which are 1) known to be products of bacterial metabolism in general and 2) capable of being produced by members of these specific microbial communities.
 This set intersection would exclude metabolites that are not known to be capable of being produced by microbes, i.e. any metabolites that are only produced by human metabolism or from outside sources such as the host diet.
 This method is inspired by AMON, which uses KEGG KOs rather than the MetaCyc database to putatively annotate the origins of metabolites in integrated metagenomic and metabolimic experiments \cite{shaffer_amon_2019}.
-MetaCyc will be used here because it is already integrated with the HUMAnN2 tool for profiling functional potential, it contains more metabolic pathways than the KEGG database, and the KEGG database can no longer be downloaded in its entirety for free \cite{caspi_metacyc_2020}.
+MetaCyc will be used here because it is already integrated with the HUMAnN2 tool for profiling functional potential,
+it contains more metabolic pathways than the KEGG database,
+and the KEGG database can no longer be downloaded in its entirety for free \cite{caspi_metacyc_2020}.
 
 \paragraph{2C) CRC classification models with potential or confirmed active pathways.}
 
 Binary random forest models to classify samples as CRC or non-cancerous will be built in a similar manner as described in Aim 1C, but with model features as potential metabolic pathways identified by HUMAnN2 or using only confirmed active metabolic pathways confirmed with LC-MS/MS.
-Features will be coded as binary variables with 1 for pathway presence and 0 for pathway absence.
-Presence/absence will be used rather than relative abundance because relative abundaces from potential pathways as determined by HUMAnN2 are fundamentally different from metabolite relative abundance as computed by the average area under the peak.
+Features will be coded as binary variables with $1$ for pathway presence and $0$ for pathway absence.
+Presence/absence will be used rather than relative abundance because abundaces of potential pathways as determined by HUMAnN2 are based on gene sequence abundances, which is fundamentally different from metabolite quantitation performed in mass spectrometry.
 Best practices for model training and evaluation will be performed as described above including splitting training and testing data, tuning the mtry hyperparameter with 5-fold cross validation, calculating AUROCs of each model on the held-out test data, and repeating these steps for 100 iterations.
 The statistical significance of differences in mean AUROC between the two types of models will be evaluated with a Wilcoxon test.
 Finally, permutation importance will be performed to determine which metabolic pathways were most important for classification model performance.
@@ -191,6 +193,8 @@ functional potential may compensate for metabolites missed by mass spectrometry.
 limitation: genes with unknown functions
 
 limitation: mass-spec features with unknown identity. Some have claimed that only ~2\% of spectra can be annotated in untargeted mass spectrometry experiments \cite{da_silva_illuminating_2015}.
+
+LC-MS/MS with data-dependent acquisition (the only type supported by GNPS) captures only the most abundant metabolites that cross a specified threshold \cite{xiao_metabolite_2012}.
 
 limitation: not time-series
 
