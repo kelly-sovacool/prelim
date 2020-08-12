@@ -22,12 +22,14 @@ genetics and environmental factors explain only a small proportion of disease in
 
 ``it is not possible to classify individuals as having healthy colons or screen relevant neoplasia using Bray- Curtis distances based on the 16S rRNA gene sequences collected from fecal samples (see Fig. S1 in the supplemental material). This variation is likely due to the ability of many bacterial populations to fill the same niche such that different populations cause the same disease in different individuals. Furthermore, a growing number of studies have shown that it is rare for a single bacterial species to be associated with a disease. Instead, subsets of the microbiome account for differences in health.'' \cite{topcuoglu_framework_2020} (Fig. \ref{fig:nmds_otu})
 
-\begin{wrapfigure}{R}{0.5\textwidth}
+\begin{wrapfigure}{R}{0.35\textwidth}
+    \vspace{-20pt}
     \begin{center}
-        \includegraphics[width=0.5\textwidth]{figures/topcuoglu_s1.png}
-        \caption{``Nonmetric multidimensional scaling (NMDS) ordination of Bray-Curtis distances. NMDS ordination relating the community structures of the fecal microbiota from 490 patients (261 patients with normal colonoscopies and 229 patients who have screen relevant neoplasias [SRNs]).'' \cite{topcuoglu_framework_2020}}
+        \includegraphics[width=0.35\textwidth]{figures/topcuoglu_s1.png}
+        \caption{NMDS ordination of Bray-Curtis distances on fecal OTUs from 261 patients with normal colonoscopies and 229 patients with screen relevant neoplasias (SRN), which includes both adenoma and carcinoma. \cite{topcuoglu_framework_2020}}
         \label{fig:nmds_otu}
     \end{center}
+    \vspace{-20pt}
 \end{wrapfigure}
 
 
@@ -68,7 +70,7 @@ trait contribution evenness (TCE): ``the evenness in relative contribution of th
 
 \paragraph{1A) Build profiles of taxonomic composition and functional potential.}
 
-16S rRNA gene sequencing was previously performed on stool samples from patients in the GLNE 007 cohort for classification modeling to detect CRC \cite{baxter_microbiota-based_2016}.
+16S rRNA gene sequencing was previously performed on stool samples from patients in the GLNE 007 cohort for classification modeling to detect CRC and adenomas \cite{baxter_microbiota-based_2016}.
 Since then, additional samples have been collected and sequenced, bringing the total dataset to 211 CRC and 223 non-cancerous samples.
 Sequences will be processed with mothur according to the MiSeq SOP \cite{schloss_introducing_2009, kozich_development_2013}.
 Briefly, processing steps include filtering for quality, removing chimeric sequences, clustering sequences into OTUs using the \textit{de novo} OptiClust method with a similarity threshold of 97\%,
@@ -77,7 +79,7 @@ Abundances will be rarefied and converted to relative abundances to circumvent b
 This final OTU abundance table will serve as the taxonomic composition profiles of each community.
 
 Whole metagenome shotgun sequencing will be performed and metagenomes will be processed with HUMAnN2 \cite{franzosa_species-level_2018} to characterize functional potential of the CRC and non-cancerous microbial communities.
-Sequences will be filtered and trimmed for quality prior to processing with HUMAnN2.
+Sequences will be trimmed for quality and reads aligning to the human reference genome will be filtered out prior to processing with HUMAnN2.
 HUMAnN2 uses MetaPhlan2 to screen sequences against a curated reference of 400,000 clade-specific marker genes to detect the microbial species present in each sample \cite{segata_metagenomic_2012}.
 This strategy is assembly-free and saves considerable computational resources over assembly-based methods.
 Next, sequences are mapped to annotated reference genomes to identify the gene families defined by Uniref90 and the metabolic pathways defined by MetaCyc \cite{caspi_metacyc_2018} that are encoded by each community.
@@ -92,56 +94,63 @@ This table of pathway abundances will serve as the functional potential profiles
 
 Beta diversity is the difference in taxonomic composition between communities.
 The Bray-Curtis dissimilarity index will be calculated on OTU relative abundances for all pairwise comparisons of samples as a measure of beta diversity \cite{bray_ordination_1957}.
-For relative abundances, where the OTU abundances sum to 1 in each sample, the Bray-Curtis dissimilarity between a pair of samples is as follows:
-
+For relative abundances, where the OTU abundances sum to $1$ in each sample, the Bray-Curtis dissimilarity between a pair of samples is as follows:
 $$b_{i i^\prime } = \frac{1}{2} \sum_{j}^J | r_{ij} - r_{i^\prime j} |$$
-
 where the relative abundance of OTU $j$ in sample $i$ is $r_{ij}$ and the Bray-Curtis index between samples $i$ and $i^\prime$ is $b_{i i^\prime }$.
-This can also be expressed as 1 minus the sum of the lesser abundances of OTUs that the samples have in common, which is equivalent to the above formula when applied to relative abundances \cite{greenacre_multivariate_2014}.
-The range is 0 to 1, with 0 meaning the samples share all the same OTUs at equal abundance and 1 meaning the samples share no OTUs.
+This can also be expressed as $1$ minus the sum of the lesser abundances of OTUs that the samples have in common, which is equivalent to the above formula when applied to relative abundances \cite{greenacre_multivariate_2014}.
+The range is $0$ to $1$, with $0$ meaning the samples share all the same OTUs at equal abundance and $1$ meaning the samples share no OTUs.
 The Bray-Curtis index is preferred over the Jaccard index because the Jaccard index only takes presence and absence of OTUs into account, while Bray-Curtis also uses abundance data such that OTUs of higher abundance have greater influence over the diversity index than rarer OTUs.
-A Non-metric Multidimensional Scaling (NMDS) plot will be created to visualize the Bray-Curtis dissimilarities.
+A Non-metric Multidimensional Scaling (NMDS) ordination plot will be created to visualize the Bray-Curtis dissimilarities.
 
 Analysis of Similarity (ANOSIM) will be performed on the pairwise dissimilarity matrix of samples to test whether the similarity in taxonomic composition within disease states is greater than the similarity within disease states \cite{clarke_non-parametric_1993}.
 To perform ANOSIM, all pairwise dissimilarities are ranked in order from most to least similar.
-The average rank similarities of samples betweens sites ($\bar{r_B}$) and within sites ($\bar{r_W}$) are computed, and the test statistic $R$ is then calculated as:
-
+The average rank similarities between samples ($\bar{r_B}$) and within samples ($\bar{r_W}$) are computed, and the test statistic $R$ is then calculated as:
 $$R = \frac{ \bar{r_B} - \bar{r_W} }{ \frac{1}{4} n(n-1) }$$
-
 with $n$ as the total number of samples.
-The $R$ statistic ranges from -1 to 1, with 1 representing greatest similarity within sites, -1 representing greatest similarity between sites, and 0 representing no difference.
+The $R$ statistic ranges from $-1$ to $1$, with $1$ representing greatest similarity within samples, -1 representing greatest similarity between samples, and $0$ representing no difference.
 The null hypothesis is that the disease states are interchangeable, i.e. there is no significant difference in taxonomic composition between disease states.
 A permutation test will then be performed to determine the significance.
-The sample disease states will be permuted and $R$ will be calculated again for a random sample of 1,000 possible permutations.
-Sampling permutations is necessary because there are $\frac{(kn)!}{n!^k k!}$ possible permutations of $k$ disease states for $n$ samples each;
-for 2 disease states with 200 samples each that would be $5.1 \times 10^118$ permutations.
+The sample disease states will be permuted and $R$ will be calculated again for a random sample of $1000$ possible permutations.
+Sampling permutations is necessary because there are $(kn)!/[(n!)^k k!]$ possible permutations of $k$ disease states for $n$ samples each;
+for $2$ disease states with $200$ samples each that would be $5 \times 10^{118}$ permutations.
 The permutated samples gives an estimate of the $R$ distribution under the null hypothesis,
-thus fraction of permutation $R$s that are greater than or equal to the observed $R$ is the $P$ value.
-Previous studies have not found significant differences in beta diversity between CRC and non-cancerous communities, and that result is expected here as well \cite{weir_stool_2013, hannigan_diagnostic_2018, topcuoglu_framework_2020}.
+thus the fraction of permutation $R$s that are greater than or equal to the observed $R$ is the $P$ value.
+Previous studies have not found significant differences in beta diversity between CRC and non-cancerous communities, and that result is expected here as well (see fig. \ref{fig:nmds_otu}) \cite{weir_stool_2013, hannigan_diagnostic_2018, topcuoglu_framework_2020}.
 
 While diversity metrics are traditionally applied to taxa abundance data,
 they can also be applied to other types of abundance data such as functional potential profiles \cite{franzosa_species-level_2018}.
 Bray-Curtis dissimilarity will be calculated on metabolic pathway relative abundances for all pairwise comparisons of samples to measure the beta diversity of functional potential.
 As with taxonomic beta diversity, significance of functional diversity will be assessed with ANOSIM and an NMDS plot will be created to visualize the dissimilarities.
-If there is not a significant difference in taxonomic beta diversity between disease states,
-while there is a significant difference in functional beta diversity between disease states,
-functional redundancy \textit{within} disease states is a likely explanation.
+A lack of significant difference in taxonomic beta diversity between disease states
+while there is a significant difference in functional beta diversity between disease states
+would imply the presence of functional redundancy \textit{within} disease states.
 
 \paragraph{1C) CRC classification models with taxonomic composition or functional potential.}
 
+\begin{wrapfigure}{R}{0.5\textwidth}
+    \vspace{-20pt}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{figures/topcuoglu_f2.jpg}
+        \caption{Performance of ML models using AUROC values of cross-validation and testing performances for classifying individuals with SRN (adenoma or carcinoma) using OTU abundances. The performance of random forest was higher than other models, but not significantly (P > 0.05). The vertical line at $0.5$ depicts an AUROC which performs no better than random. \cite{topcuoglu_framework_2020}}
+        \label{fig:rf}
+    \end{center}
+    \vspace{-20pt}
+\end{wrapfigure}
+
 Binary random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
 The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
+A more recent study comparing modeling methods for OTU-based classification of screen relevant neoplasia (SRN; includes adenoma and carcinoma) found that random forest performed better than other methods including logistic regression, but not significantly so (see Fig. \ref{fig:rf}) \cite{topcuoglu_framework_2020}.
 The dataset will be randomly split into 80\% training and 20\% testing sets, stratified to maintain the proportion of CRC to non-cancerous samples.
-The mtry hyperparameter, which is the number of features used in each tree split, will be tuned to maximize the mean area under the receiver operating characteristic curve (AUC) with 5-fold cross-validation.
-Each model will then be trained with the best mtry value and the test AUC will be calculated with the held-out test data.
-These steps will be repeated for 100 iterations and the test AUCs will be recorded.
-The statistical significance of differences in mean AUCs between the three types of models will be evaluated with a pairwise Wilcoxon test with Bonferroni-corrected P values for comparisons among the three models \cite{hannigan_diagnostic_2018}.
-The Wilcoxon test is appropriate because for each model, there is a mean AUC for each data split, thus the mean AUCs are matched by data splits.
+The mtry hyperparameter, which is the number of features used in each tree split, will be tuned to maximize the mean area under the receiver operating characteristic curve (AUROC) with 5-fold cross-validation.
+ROC plots the true positive rate over the false positive rate, while AUROC is interpreted as the chance that the model can distinguish between disease states.
+Each model will then be trained with the best mtry value and the test AUROC will be calculated with the held-out test data.
+These steps will be repeated for 100 iterations and the test AUROCs will be recorded.
+The statistical significance of differences in mean AUROCs between the three types of models will be evaluated with a pairwise Wilcoxon test with Bonferroni-corrected $P$ values for comparisons among the three models \cite{hannigan_diagnostic_2018}.
+The Wilcoxon test is appropriate because for each model, there is a mean AUROC for each data split, thus the mean AUROCs are matched by data splits.
 Permutation importance will be performed to determine which features (OTUs and pathways) have the greatest influence over model performance, which implies their importance as CRC biomarkers.
 These methods have been lauded as best practices for building OTU-based machine learning models \cite{topcuoglu_framework_2020} and are currently being implemented in an R package (https://github.com/SchlossLab/mikRopML).
-To reduce the runtime, these tasks will run in parallel where possible on the Great Lakes HPC cluster.
+To reduce the runtime, these tasks will be run in parallel where possible on the Great Lakes HPC cluster.
 
-TODO RF model performance on 490 dataset with adenoma
 
 \subsection*{Aim 2. Integrating active metabolites with functional gene potential}
 
@@ -169,10 +178,10 @@ MetaCyc will be used here because it is already integrated with the HUMAnN2 tool
 Binary random forest models to classify samples as CRC or non-cancerous will be built in a similar manner as described in Aim 1C, but with model features as potential metabolic pathways identified by HUMAnN2 or using only confirmed active metabolic pathways confirmed with LC-MS/MS.
 Features will be coded as binary variables with 1 for pathway presence and 0 for pathway absence.
 Presence/absence will be used rather than relative abundance because relative abundaces from potential pathways as determined by HUMAnN2 are fundamentally different from metabolite relative abundance as computed by the average area under the peak.
-Best practices for model training and evaluation will be performed as described above including splitting training and testing data, tuning the mtry hyperparameter with 5-fold cross validation, calculating AUCs of each model on the held-out test data, and repeating these steps for 100 iterations.
-The statistical significance of differences in mean AUC between the two types of models will be evaluated with a Wilcoxon test.
+Best practices for model training and evaluation will be performed as described above including splitting training and testing data, tuning the mtry hyperparameter with 5-fold cross validation, calculating AUROCs of each model on the held-out test data, and repeating these steps for 100 iterations.
+The statistical significance of differences in mean AUROC between the two types of models will be evaluated with a Wilcoxon test.
 Finally, permutation importance will be performed to determine which metabolic pathways were most important for classification model performance.
-If the mean AUC is significantly higher for models using only confirmed active pathways than those using functional pathways,
+If the mean AUROC is significantly higher for models using only confirmed active pathways than those using functional pathways,
 functional potential on its own is not sufficient to characterize true community function in CRC.
 On the other hand, if models using potential pathways perform at least as well as models using only confirmed active pathways,
 functional potential may compensate for metabolites missed by mass spectrometry.
@@ -181,7 +190,7 @@ functional potential may compensate for metabolites missed by mass spectrometry.
 
 limitation: genes with unknown functions
 
-limitation: mass-spec features with unknown identity. Some have claimed that only ~2\% of spectra can be annotated in untargeted mass spectrometry experiments \cite{de_silva_illuminating_2015}.
+limitation: mass-spec features with unknown identity. Some have claimed that only ~2\% of spectra can be annotated in untargeted mass spectrometry experiments \cite{da_silva_illuminating_2015}.
 
 limitation: not time-series
 
