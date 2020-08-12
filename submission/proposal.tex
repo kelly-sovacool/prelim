@@ -34,21 +34,19 @@ which can then be biopsied during the same colonoscopy session for diagnostic co
 But despite its effectiveness, the cost and highly-invasive nature of colonoscopy cause low patient compliance \cite{ling_attitudes_2001, jones_patient-reported_2010}.
 The fecal immunochemical test (FIT), a quantitative measure of hemoglobin concentrations in stool,
 is currently the best non-invasive screening tool for SRNs, but has low sensitivity.
-OTU-based machine learning (ML) models have been developed that improve sensitivity when used in complement with FIT, demonstrating the feasibility of using microbiome-based markers for diagnosis \cite{baxter_microbiota-based_2016}.
+OTU-based machine learning (ML) models have been developed that modestly improve sensitivity when used in complement with FIT, demonstrating the feasibility of using microbiome-based markers for diagnosis \cite{baxter_microbiota-based_2016}.
 
 No single organism or gene has been indicated in all cases of CRC;
 rather, the activities of the microbial community as a whole seem to be implicated \cite{louis_gut_2014}.
-Taxonomic composition is often compared between communities by calculating beta diversity metrics such as the Bray-Curtis distance and plotting an ordination to visualize separation between groups, such as cancerous and healthy.
-One would think that if ML models can use taxonomic composition to classify samples as cancerous or healthy,
-that differences in taxonomic composition would also be reflected in an ordination.
-However, patient stool samples cannot be classified as having SRNs or not using beta diversity,
-as shown in the lack of distinct clustering in Fig. \ref{fig:nmds_otu}.
-also in the case of obesity
+Taxonomic composition is often compared between communities by calculating beta diversity and plotting an ordination to visualize separation between disease states.
+However, patient stool samples cannot be classified as having SRNs or not using Bray-Curtis dissimilarity as the beta diversity metric,
+as seen in the lack of distinct clustering of disease states shown in Fig. \ref{fig:nmds_otu}.
+The reason is microbiome composition is highly variable between individuals, even more so than between disease states.
+This finding has been observed not only across independent CRC datasets but also in other diseases including obesity, oral cancer \cite{weir_stool_2013, finucane_taxonomic_2014, perrera_inflammatory_2018}.
 
-hannigan: rf implies biological significance (see discussion section)
-
-
-``it is not possible to classify individuals as having healthy colons or screen relevant neoplasia using Bray- Curtis distances based on the 16S rRNA gene sequences collected from fecal samples (see Fig. S1 in the supplemental material). This variation is likely due to the ability of many bacterial populations to fill the same niche such that different populations cause the same disease in different individuals. Furthermore, a growing number of studies have shown that it is rare for a single bacterial species to be associated with a disease. Instead, subsets of the microbiome account for differences in health.'' \cite{topcuoglu_framework_2020} (Fig. \ref{fig:nmds_otu})
+Thus, there is a point of tension; complex changes in gut microbiome composition are implicated in disease,
+but interpersonal variability obscures easily-recognizable patterns that could be used to distinguish disease states.
+Variability of microbiome composition between individuals with the same disease status may be explained by functional redundancy, where different microbial species carry out the same functions and thus can replace each other with little effect on the overall function of the community.
 
 \begin{wrapfigure}{R}{0.35\textwidth}
     \vspace{-20pt}
@@ -59,6 +57,11 @@ hannigan: rf implies biological significance (see discussion section)
     \end{center}
     \vspace{-20pt}
 \end{wrapfigure}
+
+hannigan: rf implies biological significance (see discussion section)
+
+
+``it is not possible to classify individuals as having healthy colons or screen relevant neoplasia using Bray- Curtis distances based on the 16S rRNA gene sequences collected from fecal samples (see Fig. S1 in the supplemental material). This variation is likely due to the ability of many bacterial populations to fill the same niche such that different populations cause the same disease in different individuals. Furthermore, a growing number of studies have shown that it is rare for a single bacterial species to be associated with a disease. Instead, subsets of the microbiome account for differences in health.'' \cite{topcuoglu_framework_2020} (Fig. \ref{fig:nmds_otu})
 
 
 previous study with n=10 CRC and normal. did 16S + untargeted metab. no sig difs in taxonomic comp. did find difs in metabolites. \cite{weir_stool_2013}
@@ -86,7 +89,7 @@ trait contribution evenness (TCE): ``the evenness in relative contribution of th
 ``This functional redundancy is further reflected in the fraction of the observed microbial community capable of participating in each metabolic step, with no statistically significant difference between the boreholes, except for ammonia oxidation (Figure 6).'' (used Student's t-test and Wilcoxon rank sum) \cite{tully_dynamic_2018}
 
 
-\section*{Significance} % 1/2 page
+\paragraph{Significance:} % 1/2 page
 
 
 \section*{Research Design and Methods}
