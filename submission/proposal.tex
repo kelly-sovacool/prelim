@@ -35,16 +35,21 @@ previous study with n=10 CRC and normal. did 16S + untargeted metab. no sig difs
 
 other studies found specifical potential functional pathways that are CRC biomarkers, especially choline metabolism pathway \cite{thomas_metagenomic_2019}.
 
+While the concept of functional redundancy is well-developed in macroecology,
+there does not seem to be a consensus on how to measure functional redundancy in culture-independent microbial communities,
+where function is often assessed with meta'omic approaches \cite{ricotta_measuring_2016, louca_function_2018, heintz-buschart_human_2018, royalty_quantitative_2020}.
 
-we don't know enough about functional redundancy in the human gut microbiome \cite{heintz-buschart_human_2018}
-
-``Community-level function is often more conserved than community composition15,39–41, con- sistent with a functional repertoire ‘defining’ a niche and satisfied by different microbial assemblages.'' \cite{franzosa_species-level_2018}
-
-many published studies claiming to have found functional redundancies in microbial systems lack quantitative analyses of redundancy \cite{souza_metagenomic_2015, ferrer_microbiota_2013}.
+many published studies claiming to have found functional redundancies in microbial systems lack quantitative analyses of redundancy \cite{souza_metagenomic_2015, ferrer_microbiota_2013, galambos_genome-resolved_2019}.
 
 no one agrees on exact definition of functional redundancy \cite{louca_function_2018, heintz-buschart_human_2018, tully_dynamic_2018, royalty_quantitative_2020}.
 ``Stability in ecosystem function with increasing microbial diversity is often considered an empirical indication of functional redundancy''
 \cite{royalty_quantitative_2020}
+
+we don't know enough about functional redundancy in the human gut microbiome \cite{heintz-buschart_human_2018}
+
+``Community-level function is often more conserved than community composition, consistent with a functional repertoire ‘defining’ a niche and satisfied by different microbial assemblages.'' \cite{franzosa_species-level_2018}
+
+
 
 
 trait contribution evenness (TCE): ``the evenness in relative contribution of that trait among taxa within the community... This definition has several appealing properties including: TCE is an extension of established diversity theory, functional redundancy measurements from communities with different richness and relative trait contribution by taxa are easily comparable, and any quantifiable trait data (genes copies, protein abundance, transcript copies, respiration rates, etc.) is suitable for analysis.'' \cite{royalty_quantitative_2020}
@@ -95,30 +100,32 @@ where the relative abundance of OTU $j$ in sample $i$ is $r_{ij}$ and the Bray-C
 This can also be expressed as 1 minus the sum of the lesser abundances of OTUs that the samples have in common, which is equivalent to the above formula when applied to relative abundances \cite{greenacre_multivariate_2014}.
 The range is 0 to 1, with 0 meaning the samples share all the same OTUs at equal abundance and 1 meaning the samples share no OTUs.
 The Bray-Curtis index is preferred over the Jaccard index because the Jaccard index only takes presence and absence of OTUs into account, while Bray-Curtis also uses abundance data such that OTUs of higher abundance have greater influence over the diversity index than rarer OTUs.
+A Non-metric Multidimensional Scaling (NMDS) plot will be created to visualize the Bray-Curtis dissimilarities.
 
-Analysis of Similarity (ANOSIM) will be performed on the pairwise dissimilarity matrix of samples to test whether the similarity in taxonomic composition between disease states is greater than or equal to the similarity within disease states. \cite{clarke_non-parametric_1993}
+Analysis of Similarity (ANOSIM) will be performed on the pairwise dissimilarity matrix of samples to test whether the similarity in taxonomic composition within disease states is greater than the similarity within disease states \cite{clarke_non-parametric_1993}.
 To perform ANOSIM, all pairwise dissimilarities are ranked in order from most to least similar.
-The average rank similarities of samples betweens sites ($\bar{r_B}$) and within sites ($\bar{r_W}$) are computed, and the test statistic $R$ is then computed as:
+The average rank similarities of samples betweens sites ($\bar{r_B}$) and within sites ($\bar{r_W}$) are computed, and the test statistic $R$ is then calculated as:
 
 $$R = \frac{ \bar{r_B} - \bar{r_W} }{ \frac{1}{4} n(n-1) }$$
 
 with $n$ as the total number of samples.
 The $R$ statistic ranges from -1 to 1, with 1 representing greatest similarity within sites, -1 representing greatest similarity between sites, and 0 representing no difference.
+The null hypothesis is that the disease states are interchangeable, i.e. there is no significant difference in taxonomic composition between disease states.
 A permutation test will then be performed to determine the significance.
-The sample disease states will be permuted and $R$ will be calculated again for each permutation.
-The null hypothesis is that the disease states are interchangeable, i.e. that the similarity in taxonomic composition between disease states is greater than or equal to the similarity within disease states.
-The fraction of permutation $R$s that are less than or equal to the observed $R$ is the $P$ value.
+The sample disease states will be permuted and $R$ will be calculated again for a random sample of 1,000 possible permutations.
+Sampling permutations is necessary because there are $\frac{(kn)!}{n!^k k!}$ possible permutations of $k$ disease states for $n$ samples each;
+for 2 disease states with 200 samples each that would be $5.1 \times 10^118$ permutations.
+The permutated samples gives an estimate of the $R$ distribution under the null hypothesis,
+thus fraction of permutation $R$s that are greater than or equal to the observed $R$ is the $P$ value.
 Previous studies have not found significant differences in beta diversity between CRC and non-cancerous communities, and that result is expected here as well \cite{weir_stool_2013, hannigan_diagnostic_2018, topcuoglu_framework_2020}.
-A Non-metric Multidimensional Scaling (NMDS) plot will be created to visualize the Bray-Curtis dissimilarities and accompany the ANOSIM test.
 
-While beta diversity metrics are traditionally applied to taxa abundance data,
+While diversity metrics are traditionally applied to taxa abundance data,
 they can also be applied to other types of abundance data such as functional potential profiles \cite{franzosa_species-level_2018}.
-Bray-Curtis dissimilarity will be calculated on metabolic pathway relative abundances for all pairwise comparisons of samples.
-
-anosim + nmds on pathway abundances
-
-compare taxonomic vs functional anosim
-
+Bray-Curtis dissimilarity will be calculated on metabolic pathway relative abundances for all pairwise comparisons of samples to measure the beta diversity of functional potential.
+As with taxonomic beta diversity, significance of functional diversity will be assessed with ANOSIM and an NMDS plot will be created to visualize the dissimilarities.
+If there is not a significant difference in taxonomic beta diversity between disease states,
+while there is a significant difference in functional beta diversity between disease states,
+functional redundancy \textit{within} disease states is a likely explanation.
 
 \paragraph{1C) CRC classification models with taxonomic composition or functional potential.}
 
@@ -142,7 +149,8 @@ TODO RF model performance on 490 dataset with adenoma
 
 Untargeted liquid chromatography tandem mass spectrometry (LC-MS/MS) will be performed on stool samples to determine the functions actively performed by the bacterial community.
 LC-MS/MS spectra will be processed with the Global Natural Products Social Molecular Networking (GNPS) a popular web-based tool for processing, annotating, and sharing tandem mass spectrometry data \cite{wang_sharing_2016}.
-GNPS queries spectra against all reference spectra accumulated in GNPS libraries to find exact matches and annotate known compounds.
+GNPS queries spectra against all reference spectra accumulated in GNPS libraries to find exact matches and annotate known compounds \cite{aron_reproducible_2020}.
+As of 2016, GNPS had 18,163 compounds in its database, and trained users can contribute new spectra created from high quality standards.
 The spectral search outputs structures of known annotated metabolites represented by spectra, which will be converted to International Chemical Identifiers (InChi) through the GNPS API for compatibility with the MetaCyc database.
 It is important to note that stool samples contain metabolites which can be derived from host metabolism, microbial metabolism, both, or neither.
 The functional potential from metagenomes provides an avenue to identify which metabolites are likely products of microbial metabolism.
@@ -160,9 +168,14 @@ MetaCyc will be used here because it is already integrated with the HUMAnN2 tool
 
 Binary random forest models to classify samples as CRC or non-cancerous will be built in a similar manner as described in Aim 1C, but with model features as potential metabolic pathways identified by HUMAnN2 or using only confirmed active metabolic pathways confirmed with LC-MS/MS.
 Features will be coded as binary variables with 1 for pathway presence and 0 for pathway absence.
+Presence/absence will be used rather than relative abundance because relative abundaces from potential pathways as determined by HUMAnN2 are fundamentally different from metabolite relative abundance as computed by the average area under the peak.
 Best practices for model training and evaluation will be performed as described above including splitting training and testing data, tuning the mtry hyperparameter with 5-fold cross validation, calculating AUCs of each model on the held-out test data, and repeating these steps for 100 iterations.
 The statistical significance of differences in mean AUC between the two types of models will be evaluated with a Wilcoxon test.
 Finally, permutation importance will be performed to determine which metabolic pathways were most important for classification model performance.
+If the mean AUC is significantly higher for models using only confirmed active pathways than those using functional pathways,
+functional potential on its own is not sufficient to characterize true community function in CRC.
+On the other hand, if models using potential pathways perform at least as well as models using only confirmed active pathways,
+functional potential may compensate for metabolites missed by mass spectrometry.
 
 \section*{Potential Outcomes and Conclusions}
 
