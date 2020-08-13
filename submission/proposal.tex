@@ -230,15 +230,42 @@ functional potential may compensate for metabolites missed by mass spectrometry.
 
 \section*{Potential Outcomes and Conclusions}
 
-limitation: genes with unknown functions
+If the performance of the models using functional potential profiles is significantly better than the model using only taxonomic composition profiles,
+that would support the idea that functional redundancy explains the phenomenon of high interpersonal variability in microbiome composition obscuring differences between disease states.
+However, if no evidence for functional redundancy is found in Aim 1B, alternative explanations will be required.
+Performing feature permutation importance will then be especially necessary in order to identify which functions and/or OTUs are most important in accurate classification and to explain model performance.
+If models with functional potential perform no better or worse than taxonomic models,
+a possible explanation is that functional potential is not a close enough approximation to true function to discriminate disease states.
+In that scenario, validating potential functions with active metabolites will be especially important.
 
-limitation: mass-spec features with unknown identity. Some have claimed that only ~2\% of spectra can be annotated in untargeted mass spectrometry experiments \cite{da_silva_illuminating_2015}.
+One limitation of this study is that stool samples are only proxies for the actual gut environment.
+Not all microbes or metabolites in the gut make it to the stool.
+However, stool is preferable because it is far less invasive to provide a stool sample than to undergo colonoscopy.
+Also, the data are not time-series.
+Each patient only provides one stool sample, and we do not have information on the timing of the bowel movement such as following fasting, eating, sleep, or time of day.
+Microbial metabolism is likely to fluctuate depending on some or all of these factors.
+Metabolites could be capable of being produced by microbes, but actually weren't being produced in the community at the time of sampling.
+Fluctuations in metabolite production would be entirely unknown, and different stool samples could be provided under very different conditions.
+This could negatively impact the ability to identify metabolic markers of CRC and reduce model performance.
 
-LC-MS/MS with data-dependent acquisition (the only type supported by GNPS) captures only the most abundant metabolites that cross a specified threshold \cite{xiao_metabolite_2012}.
+Another limitation of this study is that there are numerous microbial genes with unknown functions which would be missed by this study.
+Similarly to unknown genes, the vast majority of spectra from untargeted mass spectrometry have unknown identity.
+As few as ~2\% of spectra can be annotated in untargeted mass spectrometry experiments \cite{da_silva_illuminating_2015}.
+This is a major unsolved problem in untargeted metabolomics because confirming spectra with known commercial standards is time-consuming.
+Additionally, LC-MS/MS with data-dependent acquisition (the only type supported by GNPS) captures only the most abundant metabolites that cross a specified threshold \cite{xiao_metabolite_2012}.
+This study would miss all metabolites that cannot be annotated via spectral search with the GNPS database, that are not abundant enough to be captured by LC-MS/MS, or that participate in pathways that are encoded by unknown genes.
+The pathways that these unknown genes and metabolites participate in could be important in CRC etiology and/or classification,
+and excluding them could negatively impact model performance as well as obscure our understanding of the underlying biology.
+If models using only active pathways do not perform better than those using all potential pathways in Aim 1C,
+the importance of unknown metabolites in CRC is a possible explanation.
+Directly using all metabolites instead of collapsing into known pathways could circumvent this problem,
+but that would greatly increase the number of ML features and would also necessarily include metabolites of non-microbial origin.
 
-limitation: not time-series
-
-limitation: metabolites could be capable of being produced by microbes, but actually weren't being produced in the community at the time of sampling.
+Finally, cost is a plausible explanation for the lack of large datasets containing both metagenomics and metabolomics data.
+Depending on the rates charged by metagenomics sequencing and metabolomics core services,
+this study could cost anywhere from $50$ thousand to $200$ thousand dollars just to generate the omics data for all $434$ stool samples.
+That does not even take into account the cost of analyzing the data, training complex machine learning models on a high performance computing cluster, and the salaries of the researchers who will perform the study.
+Despite the cost, a large, high-quality dataset of CRC and non-cancerous stool samples with 16S sequence, metagenomics, and untargeted metabolomics would be incredibly valuable for the field.
 
 \pagebreak
 \bibliographystyle{submission/nihunsrt} % downloaded from https://www.latextemplates.com/template/nih-grant-proposal
