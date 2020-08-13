@@ -36,61 +36,65 @@ The fecal immunochemical test (FIT), a quantitative measure of hemoglobin concen
 is currently the best non-invasive screening tool for SRNs, but has low sensitivity.
 OTU-based machine learning (ML) models have been developed that modestly improve sensitivity when used in complement with FIT, demonstrating the feasibility of using microbiome-based markers for diagnosis \cite{baxter_microbiota-based_2016}.
 
+\begin{wrapfigure}{R}{0.35\textwidth}
+    \vspace{-11pt}
+    \centering{
+        \includegraphics[width=0.35\textwidth]{figures/topcuoglu_s1.png}
+        \caption{NMDS ordination of Bray-Curtis distances on fecal OTUs from 261 patients with normal colonoscopies and 229 patients with screen relevant neoplasias (SRN), which includes both adenoma and carcinoma. \cite{topcuoglu_framework_2020}}
+        \label{fig:nmds_otu}
+    }
+    \vspace{-8pt}
+\end{wrapfigure}
 No single organism or gene has been indicated in all cases of CRC;
 rather, the activities of the microbial community as a whole seem to be implicated \cite{louis_gut_2014}.
 Taxonomic composition is often compared between ecological communities by calculating a beta diversity metric such as the Bray-Curtis dissimilarity, then plotting an ordination to visualize separation between disease states.
 However, patient stool samples cannot be classified as having SRNs or not using beta diversity metrics,
 as seen in the lack of distinct clustering of disease states shown in Fig. \ref{fig:nmds_otu}.
 The reason is microbiome composition is highly variable between individuals, even more so than between disease states.
-This finding has been observed not only across independent CRC datasets but also in other diseases including obesity and oral cancer \cite{weir_stool_2013, finucane_taxonomic_2014, perrera_inflammatory_2018}.
-\begin{wrapfigure}{R}{0.35\textwidth}
-    \vspace{-20pt}
-    \begin{center}
-        \includegraphics[width=0.35\textwidth]{figures/topcuoglu_s1.png}
-        \caption{NMDS ordination of Bray-Curtis distances on fecal OTUs from 261 patients with normal colonoscopies and 229 patients with screen relevant neoplasias (SRN), which includes both adenoma and carcinoma. \cite{topcuoglu_framework_2020}}
-        \label{fig:nmds_otu}
-    \end{center}
-    \vspace{-20pt}
-\end{wrapfigure}
+This finding has been observed not only across independent CRC datasets but also in other diseases including obesity and oral cancer \cite{weir_stool_2013, finucane_taxonomic_2014, perera_inflammatory_2018}.
 
 It has been proposed that this interpersonal variability can be explained by the ability of different microbial species to carry out the same functions,
 allowing communities with different taxonomic composition to cause the same disease \cite{franzosa_species-level_2018}.
-Researchers are increasingly turning to whole-metagenome shotgun sequencing in order to explore the genes and potential functions of microbiomes.
+Researchers are increasingly turning to whole-metagenome shotgun sequencing in order to explore the genes and build profiles of funtional potential of microbiomes.
 Indeed, metagenomics studies have found some associations between specific potential functional pathways and CRC \cite{thomas_metagenomic_2019}.
-Using functional potential in addition to or in place of taxonomic composition may therefore improve the performance of classification models for CRC detection.
+Using functional potential profiles in addition to or in place of taxonomic composition may therefore improve the performance of classification models for CRC detection.
 
 Functional redundancy is the phenomenon where different species carry out the same functions and thus can replace each other with little effect on the overall function of a community.
 The concept of functional redundancy has been developed and explored in the field of ecology,
-but few studies have directly applied it to microbial ecology specifically.
+but few studies have directly applied it to microbial ecology specifically \cite{ricotta_measuring_2016}.
 There does not seem to be a consensus on how to assess functional redundancy in culture-independent microbial communities,
-where function is often measured indirectly with meta'omic approaches \cite{ricotta_measuring_2016, louca_function_2018, heintz-buschart_human_2018, royalty_quantitative_2020}.
+where function is often measured indirectly using meta'omic approaches \cite{louca_function_2018, heintz-buschart_human_2018, tully_dynamic_2018, royalty_quantitative_2020}.
 Many published studies claiming to have found functional redundancies in microbial systems lack quantitative analyses of redundancy,
 instead vaguely describing patterns observed by eye \cite{souza_metagenomic_2015, ferrer_microbiota_2013, galambos_genome-resolved_2019}.
-The problem is further complicated by the existence slightly different competing definitions of functional redundancy \cite{louca_function_2018, heintz-buschart_human_2018, tully_dynamic_2018, royalty_quantitative_2020}.
-``Stability in ecosystem function with increasing microbial diversity is often considered an empirical indication of functional redundancy''
-\cite{royalty_quantitative_2020}
+The problem is further complicated by the existence of slightly different competing definitions of functional redundancy.
+Definitions from macroecology use species counts, rendering them not easily adaptable to meta'omics data which are inherently compositional.
+Royalty \textit{et al.} very recently defined functional redundancy at the trait level as the evenness in relative contribution of a trait among taxa in a community \cite{royalty_quantitative_2020}.
+Another definition which seems to be popular is that if different microbial communities have different taxonomic composition, but similar functional composition, there is functional redundancy \cite{louca_function_2018}.
+This last heuristic has advantages:
+1) it is defined by comparing different communities rather than within the same community, which easily links back to the motivating problem of interpersonal variability exceeding inter-disease state variability;
+2) computational resources can be saved by comparing community compositions overall, rather than calculating a metric for every observed function in every community.
+Finding evidence for functional redundancy in CRC and non-cancerous gut metagenomes would support the idea that functional redundancy can explain the high degree of interpersonal variability in microbiome composition.
 
-
-trait contribution evenness (TCE): ``the evenness in relative contribution of that trait among taxa within the community... This definition has several appealing properties including: TCE is an extension of established diversity theory, functional redundancy measurements from communities with different richness and relative trait contribution by taxa are easily comparable, and any quantifiable trait data (genes copies, protein abundance, transcript copies, respiration rates, etc.) is suitable for analysis.'' \cite{royalty_quantitative_2020}
-
-``Functional redundancy is a measure of the number of different populations within a community that are able to perform the same functions. Functional redundancy can increase functional resilience, in case perturbations affect the taxonomic community structure; this allows for a return to community function, and therefore can increase stability.'' \cite{heintz-buschart_human_2018}
-
-``This functional redundancy is further reflected in the fraction of the observed microbial community capable of participating in each metabolic step, with no statistically significant difference between the boreholes, except for ammonia oxidation (Figure 6).'' (used Student's t-test and Wilcoxon rank sum) \cite{tully_dynamic_2018}
-
-
-But metagenomics only shows the functional \textit{potential} of a microbiome.
-Metagenomics cannot
-
-previous study with n=10 CRC and normal. did 16S + untargeted metab. no sig difs in taxonomic comp. did find difs in metabolites. \cite{weir_stool_2013}
+It is important to note that metagenomics only shows the functional \textit{potential} of a microbiome.
+Metagenomics cannot discriminate between the functions that microbes can perform, and the functions they are actually performing.
+It would be unreasonable to expect that all potential pathways encoded by a metagenome are active at any particular point in time.
+Metabolomics techniques are needed for measuring the metabolites, the small molecules which are inputs and outputs of chemical reactions in living systems, that are actually present in a sample.
+Untargeted mass spectrometry techniques such as liquid chromatography with tandem mass spectrometry (LC-MS/MS) are popular for identifying metabolites present in biological samples.
+Advantages of untargeted over targeted MS are that one does not need to know which metabolites to look for in advance of performing MS, and that novel metabolites can be discovered.
+A disadvantage is that identifying metabolites present in untargeted MS datasets is notoriously difficult; some estimate as few as ~2\% of mass spectra can be annotated in untargeted experiments \cite{da_silva_illuminating_2015}.
+Nevertheless, the metabolites that can be identified would provide a useful confirmation of functional potential profiles from metagenomes.
+Coupling metagenomics with metabolimcs would also provide a way to identify which metabolites are products of bacterial metabolism and not of host metabolism or sources such as diet \cite{shaffer_amon_2019}.
+Using confirmed microbial metabolites would thus paint a more precise picture of true active function for classification modeling of CRC microbiomes.
 
 \paragraph{Significance:} % 1/2 page
-No studies to date have directly assessed functional redundancy in the human gut microbiome nor in CRC.
+No studies to date have directly assessed functional redundancy in the human gut microbiome nor in CRC,
+nor coupled the functional potential of metagenomes with metabolomes in CRC gut microbiomes.
+There also does not exist a sufficiently large dataset including both metagenomic and untargeted metabolomics data from CRC and non-cancerous gut microbiomes for machine learning, although there are a handful datasets which include 16S sequence and metabolomics data.
 If ML models using functional potential outperform those using only OTUs as model features,
-that would not only improve screening tools for CRC,
-but also would implicate the importance of functional redundancy in the biological processes underpinning CRC.
-I have not found a sufficiently large dataset including both metagenomic and untargeted metabolomic data from CRC and non-cancerous gut microbiomes, although there are a handful datasets which include 16S sequence data and metabolomics.
+that would implicate the importance of functional redundancy in the biological processes underpinning CRC.
 If ML models using confirmed active metabolic pathways outperform those using all potential pathways,
 that would underscore the need to consider true function and not just functional potential when investigating microbiomes.
+Overall, improving the performance of CRC classification models would represent a step in the right direction for developing non-invasive methods for CRC diagnosis.
 
 \section*{Research Design and Methods}
 
@@ -116,7 +120,6 @@ MinPath pares down the list of metabolic pathways to the minimum set that can be
 The end result is a conservative table of metabolic pathways encoded by each microbial community and their abundances.
 As with OTU abundances, pathway abundances will be converted to relative abundances.
 This table of pathway abundances will serve as the functional potential profiles of the gut microbial communities.
-
 
 \paragraph{1B) Functional redundancy in CRC and non-cancerous gut microbiomes.}
 
@@ -152,21 +155,21 @@ As with taxonomic beta diversity, significance of functional diversity will be a
 A lack of significant difference in taxonomic beta diversity between disease states
 while there is a significant difference in functional beta diversity between disease states
 would imply the presence of functional redundancy \textit{within} disease states.
+This concords with the heuristic definition of functional redundancy as different microbial communities having different taxonomic composition but similar functional composition.
 
 \paragraph{1C) CRC classification models with taxonomic composition or functional potential.}
 
-\begin{wrapfigure}{R}{0.5\textwidth}
-    \vspace{-20pt}
-    \begin{center}
+Binary random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
+The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
+begin{wrapfigure}{R}{0.5\textwidth}
+    \vspace{-11pt}
+    \centering{
         \includegraphics[width=0.5\textwidth]{figures/topcuoglu_f2.jpg}
         \caption{Performance of ML models using AUROC values of cross-validation and testing performances for classifying individuals with SRN (adenoma or carcinoma) using OTU abundances. The performance of random forest was higher than other models, but not significantly (P > 0.05). The vertical line at $0.5$ depicts an AUROC which performs no better than random. \cite{topcuoglu_framework_2020}}
         \label{fig:rf}
-    \end{center}
-    \vspace{-20pt}
+    }
+    \vspace{-11pt}
 \end{wrapfigure}
-
-Binary random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
-The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
 A more recent study comparing modeling methods for OTU-based classification of screen relevant neoplasia (SRN; includes adenoma and carcinoma) found that random forest performed better than other methods including logistic regression, but not significantly so (see Fig. \ref{fig:rf}) \cite{topcuoglu_framework_2020}.
 Prior to training, features will be filtered to remove any OTUs and pathways with near-zero variance, as these are not likely to be informative and would only increase training time.
 The dataset will be randomly split into 80\% training and 20\% testing sets, stratified to maintain the proportion of CRC to non-cancerous samples.
@@ -179,7 +182,6 @@ The Wilcoxon test is appropriate because for each data split, there is a mean AU
 Permutation importance will be performed to determine which features (OTUs and pathways) have the greatest influence over model performance, which implies their importance as CRC biomarkers.
 These methods have been lauded as best practices for building OTU-based machine learning models \cite{topcuoglu_framework_2020} and are currently being implemented in an R package (https://github.com/SchlossLab/mikRopML).
 To reduce the runtime, these tasks will be run in parallel where possible on the Great Lakes HPC cluster.
-
 
 \subsection*{Aim 2. Integrating active metabolites with functional gene potential}
 
