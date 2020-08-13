@@ -179,7 +179,6 @@ ROC plots the true positive rate over the false positive rate, while AUROC is in
 Each model will then be trained with the best mtry value and the test AUROC will be calculated with the held-out test data.
 These steps will be repeated for 100 iterations with a different training/testing data split each time, and the test AUROCs will be recorded.
 The statistical significance of differences in mean AUROCs between the three types of models will be evaluated with a pairwise Wilcoxon test with Bonferroni-corrected $P$ values for comparisons among the three models \cite{hannigan_diagnostic_2018}.
-The paired Wilcoxon test is appropriate because for each data split, there is a mean AUROC for each model, thus the mean AUROCs are matched by data splits.
 Permutation importance will be performed to determine which features (OTUs and pathways) have the greatest influence over model performance, which implies their importance as CRC biomarkers.
 These methods have been lauded as best practices for building OTU-based machine learning models \cite{topcuoglu_framework_2020} and are currently being implemented in an R package (https://github.com/SchlossLab/mikRopML).
 To reduce the runtime, these tasks will be run in parallel where possible on the Great Lakes HPC cluster.
