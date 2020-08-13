@@ -7,11 +7,11 @@
 
 <!-- badges: end -->
 
-|              |                          |                                |
-| ------------ | ------------------------ | ------------------------------ |
-| Abstract     | [PDF](docs/abstract.pdf) | [TeX](submission/abstract.tex) |
-| Proposal     | [PDF](docs/proposal.pdf) | [TeX](submission/proposal.tex) |
-| Presentation | \[HTML\]                 | \[Rmd\]                        |
+|              |                                                                                                                 |                                |
+| ------------ | --------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Abstract     | [PDF](docs/abstract.pdf)                                                                                        | [TeX](submission/abstract.tex) |
+| Proposal     | [PDF](docs/proposal.pdf)                                                                                        | [TeX](submission/proposal.tex) |
+| Presentation | [gslides](https://docs.google.com/presentation/d/19kXLBr-lk_3Wva_raEzOGOYW2AH-GfA2ngcSSdOFJlY/edit?usp=sharing) | \-                             |
 
 ## Dataset
 
@@ -31,6 +31,7 @@ nrow(metadata)
 metadata %>% 
     group_by(Diagnosis) %>% 
     summarize(n = n())
+#> `summarise()` ungrouping output (override with `.groups` argument)
 #> # A tibble: 6 x 2
 #>   Diagnosis            n
 #>   <chr>            <int>
@@ -48,6 +49,7 @@ metadata %>%
            ) %>% 
     group_by(Diagnosis) %>% 
     summarize(n = n())
+#> `summarise()` ungrouping output (override with `.groups` argument)
 #> # A tibble: 3 x 2
 #>   Diagnosis     n
 #>   <chr>     <int>
