@@ -23,7 +23,7 @@ Genetic factors explain only a small proportion of CRC cases, and lifestyle-base
 Many studies have observed changes in the composition of the gut microbiome in CRC, implicating microbes as potential risk factors, or at least as signatures that change in response to CRC \cite{kostic_genomic_2012, chen_decreased_2013}.
 Thus, there is great interest in identifying microbial biomarkers involved in CRC to improve our understanding of the disease and to develop improved diagnostic tests.
 Experiments in mouse models have found that treating germ-free mice with fecal matter transplants from CRC patients accelerated the progression from adenoma to carcinoma \cite{li_gut_2019, sobhani_colorectal_2019}.
-Additionally, toxigenic microbial gene products such as colibactin have been associated with human CRC gut microbiomes and experimentally tested as drivers of disease progression with mouse models \cite{cougnoux_bacterial_2013, gagnaire_collateral_2017, thakur_unveiling_2019}.
+Additionally, toxigenic microbial gene products such as colibactin have been associated with human CRC gut microbiomes and experimentally tested as drivers of disease progression with mouse models \cite{cougnoux_bacterial_2014, gagnaire_collateral_2017, thakur_unveiling_2019}.
 These findings imply that microbiome changes occur not only as a response to CRC,
 but may actually play a causative role in disease etiology.
 
@@ -159,17 +159,17 @@ This concords with the heuristic definition of functional redundancy as differen
 
 \paragraph{1C) CRC classification models with taxonomic composition or functional potential.}
 
-Binary random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
-The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
-begin{wrapfigure}{R}{0.5\textwidth}
-    \vspace{-11pt}
+\begin{wrapfigure}{R}{0.5\textwidth}
+    %\vspace{-11pt}
     \centering{
         \includegraphics[width=0.5\textwidth]{figures/topcuoglu_f2.jpg}
         \caption{Performance of ML models using AUROC values of cross-validation and testing performances for classifying individuals with SRN (adenoma or carcinoma) using OTU abundances. The performance of random forest was higher than other models, but not significantly (P > 0.05). The vertical line at $0.5$ depicts an AUROC which performs no better than random. \cite{topcuoglu_framework_2020}}
         \label{fig:rf}
     }
-    \vspace{-11pt}
+    \vspace{-8pt}
 \end{wrapfigure}
+Binary random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
+The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
 A more recent study comparing modeling methods for OTU-based classification of screen relevant neoplasia (SRN; includes adenoma and carcinoma) found that random forest performed better than other methods including logistic regression, but not significantly so (see Fig. \ref{fig:rf}) \cite{topcuoglu_framework_2020}.
 Prior to training, features will be filtered to remove any OTUs and pathways with near-zero variance, as these are not likely to be informative and would only increase training time.
 The dataset will be randomly split into 80\% training and 20\% testing sets, stratified to maintain the proportion of CRC to non-cancerous samples.
@@ -189,7 +189,7 @@ To reduce the runtime, these tasks will be run in parallel where possible on the
 
 Untargeted liquid chromatography tandem mass spectrometry (LC-MS/MS) will be performed on stool samples to determine the functions actively performed by the bacterial community.
 LC-MS/MS spectra will be processed with the Global Natural Products Social Molecular Networking (GNPS) a popular web-based tool for processing, annotating, and sharing tandem mass spectrometry data \cite{wang_sharing_2016}.
-GNPS queries spectra against all reference spectra accumulated in GNPS libraries to find exact matches and annotate known compounds \cite{aron_reproducible_2020}.
+GNPS queries spectra against all reference spectra accumulated in GNPS libraries to find near-exact matches and annotate known compounds at Level 2 or 3 (Level 1 is only possible by confirming with commerical standards) \cite{aron_reproducible_2020}.
 As of 2016, GNPS had 18,163 compounds in its database, and trained users can contribute new spectra created from high quality standards \cite{vargas_protocol_2019}.
 The spectral search outputs structures of known annotated metabolites represented by spectra, which will be converted to International Chemical Identifiers (InChi) through the GNPS API for compatibility with the MetaCyc database.
 It is important to note that stool samples contain metabolites which can be derived from host metabolism, microbial metabolism, both, or neither.
@@ -197,10 +197,19 @@ The functional potential from metagenomes provides an avenue to identify which m
 
 \paragraph{2B) Find overlapping pathways from active metabolites and functional potential profiles.}
 
+\begin{wrapfigure}{R}{0.4\textwidth}
+    %\vspace{-11pt}
+    \centering{
+        \includegraphics[width=0.4\textwidth]{figures/amon_f2b.png}
+        \caption{A case study of applying AMON to identify sources of metabolites in a microbiome sample. The method proposed here will use pathways from MetaCyc identified with HUMAnN2 rather than KEGG, and would result in confirming $41+94=135$ active microbial metabolites if this example dataset were used. \cite{shaffer_amon_2019}}
+        \label{fig:amon}
+    }
+    \vspace{-8pt}
+\end{wrapfigure}
 The IDs of metabolic products of all pathways encoded in the metagenomes of each microbial community (functional potential profiles) will be queried from the MetaCyc database to create a set of potential metabolites.
 The set of potential metabolites will be intersected with the set of metabolites annotated in LC-MS/MS.
 The intersection of these sets represents known metabolites which are 1) known to be products of bacterial metabolism in general and 2) capable of being produced by members of these specific microbial communities.
-This set intersection would exclude metabolites that are not known to be capable of being produced by microbes, i.e. any metabolites that are only produced by human metabolism or from outside sources such as the host diet.
+This set intersection would exclude metabolites that are not known to be capable of being produced by microbes, i.e. any metabolites that are only produced by human metabolism or from outside sources such as the host diet (Fig. \ref{fig:amon}).
 This method is inspired by AMON, which uses KEGG KOs rather than the MetaCyc database to putatively annotate the origins of metabolites in integrated metagenomic and metabolimic experiments \cite{shaffer_amon_2019}.
 MetaCyc will be used here because it is already integrated with the HUMAnN2 tool for profiling functional potential,
 it contains more metabolic pathways than the KEGG database,
