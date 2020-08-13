@@ -35,6 +35,7 @@ But despite its effectiveness, the cost and highly-invasive nature of colonoscop
 The fecal immunochemical test (FIT), a quantitative measure of hemoglobin concentrations in stool,
 is currently the best non-invasive screening tool for SRNs, but has low sensitivity.
 OTU-based machine learning (ML) models have been developed that modestly improve sensitivity when used in complement with FIT, demonstrating the feasibility of using microbiome-based markers for diagnosis \cite{baxter_microbiota-based_2016}.
+OTUs from 16S sequence data provide a lower cost way to profile taxonomic composition compared to sequencing and assembling whole metagenomes, making it a pragmatic choice for diagnostic tool devleopment.
 
 \begin{wrapfigure}{R}{0.35\textwidth}
     \vspace{-11pt}
@@ -50,13 +51,13 @@ rather, the activities of the microbial community as a whole seem to be implicat
 Taxonomic composition is often compared between ecological communities by calculating a beta diversity metric such as the Bray-Curtis dissimilarity, then plotting an ordination to visualize separation between disease states.
 However, patient stool samples cannot be classified as having SRNs or not using beta diversity metrics,
 as seen in the lack of distinct clustering of disease states shown in Fig. \ref{fig:nmds_otu}.
-The reason is microbiome composition is highly variable between individuals, even more so than between disease states.
+The most likely reason is that microbiome composition is highly variable between individuals, even more so than between disease states.
 This finding has been observed not only across independent CRC datasets but also in other diseases including obesity and oral cancer \cite{weir_stool_2013, finucane_taxonomic_2014, perera_inflammatory_2018}.
 
 It has been proposed that this interpersonal variability can be explained by the ability of different microbial species to carry out the same functions,
 allowing communities with different taxonomic composition to cause the same disease \cite{franzosa_species-level_2018}.
-Researchers are increasingly turning to whole-metagenome shotgun sequencing in order to explore the genes and build profiles of funtional potential of microbiomes.
-Indeed, metagenomics studies have found some associations between specific potential functional pathways and CRC \cite{thomas_metagenomic_2019}.
+Researchers are increasingly turning to whole-metagenome shotgun sequencing in order to explore the genes and gene families encoded by microbiomes and build profiles of their funtional potential.
+Indeed, metagenomics studies have found some associations with specific potential functional pathways that are differentially abundant in CRC \cite{thomas_metagenomic_2019}.
 Using functional potential profiles in addition to or in place of taxonomic composition may therefore improve the performance of classification models for CRC detection.
 
 Functional redundancy is the phenomenon where different species carry out the same functions and thus can replace each other with little effect on the overall function of a community.
@@ -78,16 +79,16 @@ Finding evidence for functional redundancy in CRC and non-cancerous gut metageno
 It is important to note that metagenomics only shows the functional \textit{potential} of a microbiome.
 Metagenomics cannot discriminate between the functions that microbes can perform, and the functions they are actually performing.
 It would be unreasonable to expect that all potential pathways encoded by a metagenome are active at any particular point in time.
-Metabolomics techniques are needed for measuring the metabolites, the small molecules which are inputs and outputs of chemical reactions in living systems, that are actually present in a sample.
+Metabolomics techniques measure the metabolites, the small molecules which are inputs and outputs of chemical reactions in living systems, that are actually present in a sample.
 Untargeted mass spectrometry techniques such as liquid chromatography with tandem mass spectrometry (LC-MS/MS) are popular for identifying metabolites present in biological samples.
 Advantages of untargeted over targeted MS are that one does not need to know which metabolites to look for in advance of performing MS, and that novel metabolites can be discovered.
 A disadvantage is that identifying metabolites present in untargeted MS datasets is notoriously difficult; some estimate as few as ~2\% of mass spectra can be annotated in untargeted experiments \cite{da_silva_illuminating_2015}.
 Nevertheless, the metabolites that can be identified would provide a useful confirmation of functional potential profiles from metagenomes.
-Coupling metagenomics with metabolimcs would also provide a way to identify which metabolites are products of bacterial metabolism and not of host metabolism or sources such as diet \cite{shaffer_amon_2019}.
+Coupling metagenomics with metabolomics would also provide a way to identify which metabolites are products of bacterial metabolism and not of host metabolism or other sources such as diet \cite{shaffer_amon_2019}.
 Using confirmed microbial metabolites would thus paint a more precise picture of true active function for classification modeling of CRC microbiomes.
 
 \paragraph{Significance:} % 1/2 page
-No studies to date have directly assessed functional redundancy in the human gut microbiome nor in CRC,
+No studies to date have directly assessed functional redundancy in the human gut microbiome in CRC,
 nor coupled the functional potential of metagenomes with metabolomes in CRC gut microbiomes.
 There also does not exist a sufficiently large dataset including both metagenomic and untargeted metabolomics data from CRC and non-cancerous gut microbiomes for machine learning, although there are a handful datasets which include 16S sequence and metabolomics data.
 If ML models using functional potential outperform those using only OTUs as model features,
@@ -107,7 +108,7 @@ Since then, additional samples have been collected and sequenced, bringing the t
 Sequences will be processed with mothur according to the MiSeq SOP \cite{schloss_introducing_2009, kozich_development_2013}.
 Briefly, processing steps include filtering for quality, removing chimeric sequences, clustering sequences into OTUs using the \textit{de novo} OptiClust method with a similarity threshold of 97\%,
 and generating a table of OTU abundances by samples \cite{westcott_opticlust_2017}.
-Abundances will be rarefied and converted to relative abundances to circumvent biases in sampling depth across samples and represent the inherently compositional nature of next-generation sequencing data.
+Abundances will be rarefied and converted to relative abundances to circumvent biases in sampling depth across samples and to represent the inherently compositional nature of next-generation sequencing data.
 This final OTU abundance table will serve as the taxonomic composition profiles of the gut microbial communities.
 
 Whole metagenome shotgun sequencing will be performed and metagenomes will be processed with HUMAnN2 \cite{franzosa_species-level_2018} to characterize functional potential of the CRC and non-cancerous microbial communities.
@@ -170,7 +171,7 @@ This concords with the heuristic definition of functional redundancy as differen
 \end{wrapfigure}
 Binary random forest models will be built to classify samples as CRC or non-cancerous using OTU abundances, metabolic pathway abundances, or both as model features.
 The random forest method has been found to perform well for microbiome-based classification problems because it can be used for non-linear data and accounts for interactions between features \cite{baxter_microbiota-based_2016}.
-A more recent study comparing modeling methods for OTU-based classification of screen relevant neoplasia (SRN; includes adenoma and carcinoma) found that random forest performed better than other methods including logistic regression, but not significantly so (see Fig. \ref{fig:rf}) \cite{topcuoglu_framework_2020}.
+A more recent study comparing modeling methods for OTU-based classification of SRNs found that random forest performed better than other methods including logistic regression, but not significantly so (see Fig. \ref{fig:rf}) \cite{topcuoglu_framework_2020}.
 Prior to training, features will be filtered to remove any OTUs and pathways with near-zero variance, as these are not likely to be informative and would only increase training time.
 The dataset will be randomly split into 80\% training and 20\% testing sets, stratified to maintain the proportion of CRC to non-cancerous samples.
 The mtry hyperparameter, which is the number of features used in each tree split, will be tuned to maximize the mean area under the receiver operating characteristic curve (AUROC) with 5-fold cross-validation.
@@ -178,7 +179,7 @@ ROC plots the true positive rate over the false positive rate, while AUROC is in
 Each model will then be trained with the best mtry value and the test AUROC will be calculated with the held-out test data.
 These steps will be repeated for 100 iterations with a different training/testing data split each time, and the test AUROCs will be recorded.
 The statistical significance of differences in mean AUROCs between the three types of models will be evaluated with a pairwise Wilcoxon test with Bonferroni-corrected $P$ values for comparisons among the three models \cite{hannigan_diagnostic_2018}.
-The Wilcoxon test is appropriate because for each data split, there is a mean AUROC for each model, thus the mean AUROCs are matched by data splits.
+The paired Wilcoxon test is appropriate because for each data split, there is a mean AUROC for each model, thus the mean AUROCs are matched by data splits.
 Permutation importance will be performed to determine which features (OTUs and pathways) have the greatest influence over model performance, which implies their importance as CRC biomarkers.
 These methods have been lauded as best practices for building OTU-based machine learning models \cite{topcuoglu_framework_2020} and are currently being implemented in an R package (https://github.com/SchlossLab/mikRopML).
 To reduce the runtime, these tasks will be run in parallel where possible on the Great Lakes HPC cluster.
@@ -188,7 +189,7 @@ To reduce the runtime, these tasks will be run in parallel where possible on the
 \paragraph{2A) Annotate known products of bacterial metabolism from untargeted mass spectrometry.}
 
 Untargeted liquid chromatography tandem mass spectrometry (LC-MS/MS) will be performed on stool samples to determine the functions actively performed by the bacterial community.
-LC-MS/MS spectra will be processed with the Global Natural Products Social Molecular Networking (GNPS) a popular web-based tool for processing, annotating, and sharing tandem mass spectrometry data \cite{wang_sharing_2016}.
+LC-MS/MS spectra will be processed with Global Natural Products Social Molecular Networking (GNPS), a popular web-based tool for processing, annotating, and sharing tandem mass spectrometry data \cite{wang_sharing_2016}.
 GNPS queries spectra against all reference spectra accumulated in GNPS libraries to find near-exact matches and annotate known compounds at Level 2 or 3 (Level 1 is only possible by confirming with commerical standards) \cite{aron_reproducible_2020}.
 As of 2016, GNPS had 18,163 compounds in its database, and trained users can contribute new spectra created from high quality standards \cite{vargas_protocol_2019}.
 The spectral search outputs structures of known annotated metabolites represented by spectra, which will be converted to International Chemical Identifiers (InChi) through the GNPS API for compatibility with the MetaCyc database.
@@ -210,7 +211,7 @@ The IDs of metabolic products of all pathways encoded in the metagenomes of each
 The set of potential metabolites will be intersected with the set of metabolites annotated in LC-MS/MS.
 The intersection of these sets represents known metabolites which are 1) known to be products of bacterial metabolism in general and 2) capable of being produced by members of these specific microbial communities.
 This set intersection would exclude metabolites that are not known to be capable of being produced by microbes, i.e. any metabolites that are only produced by human metabolism or from outside sources such as the host diet (Fig. \ref{fig:amon}).
-This method is inspired by AMON, which uses KEGG KOs rather than the MetaCyc database to putatively annotate the origins of metabolites in integrated metagenomic and metabolimic experiments \cite{shaffer_amon_2019}.
+This method is inspired by AMON, which uses KEGG KOs rather than the MetaCyc database to putatively annotate the origins of metabolites in integrated metagenomic and metabolomic experiments \cite{shaffer_amon_2019}.
 MetaCyc will be used here because it is already integrated with the HUMAnN2 tool for profiling functional potential,
 it contains more metabolic pathways than the KEGG database,
 and the KEGG database can no longer be downloaded in its entirety for free \cite{caspi_metacyc_2020}.
@@ -224,9 +225,8 @@ Best practices for model training and evaluation will be performed as described 
 The statistical significance of differences in mean AUROC between the two types of models will be evaluated with a Wilcoxon test.
 Finally, permutation importance will be performed to determine which metabolic pathways were most important for classification model performance.
 If the mean AUROC is significantly higher for models using only confirmed active pathways than those using functional pathways,
-functional potential on its own is not sufficient to characterize true community function in CRC.
-On the other hand, if models using potential pathways perform at least as well as models using only confirmed active pathways,
-functional potential may compensate for metabolites missed by mass spectrometry.
+functional potential on its own is not sufficient to characterize true community function in CRC,
+pointing to the importance of validating functions with metabolomics.
 
 \section*{Potential Outcomes and Conclusions}
 
@@ -234,21 +234,23 @@ If the performance of the models using functional potential profiles is signific
 that would support the idea that functional redundancy explains the phenomenon of high interpersonal variability in microbiome composition obscuring differences between disease states.
 However, if no evidence for functional redundancy is found in Aim 1B, alternative explanations will be required.
 Performing feature permutation importance will then be especially necessary in order to identify which functions and/or OTUs are most important in accurate classification and to explain model performance.
-If models with functional potential perform no better or worse than taxonomic models,
+If models from 1C with functional potential perform no better or worse than taxonomic models,
 a possible explanation is that functional potential is not a close enough approximation to true function to discriminate disease states.
 In that scenario, validating potential functions with active metabolites will be especially important.
+On the other hand, if models from Aim 2C using potential pathways perform at least as well as models using only confirmed active pathways,
+functional potential may compensate for metabolites missed by mass spectrometry.
 
 One limitation of this study is that stool samples are only proxies for the actual gut environment.
 Not all microbes or metabolites in the gut make it to the stool.
 However, stool is preferable because it is far less invasive to provide a stool sample than to undergo colonoscopy.
-Also, the data are not time-series.
+Also, the data are not longitudinal.
 Each patient only provides one stool sample, and we do not have information on the timing of the bowel movement such as following fasting, eating, sleep, or time of day.
 Microbial metabolism is likely to fluctuate depending on some or all of these factors.
 Metabolites could be capable of being produced by microbes, but actually weren't being produced in the community at the time of sampling.
 Fluctuations in metabolite production would be entirely unknown, and different stool samples could be provided under very different conditions.
 This could negatively impact the ability to identify metabolic markers of CRC and reduce model performance.
 
-Another limitation of this study is that there are numerous microbial genes with unknown functions which would be missed by this study.
+Another limitation is that there are numerous microbial genes with unknown functions which would be missed by this study.
 Similarly to unknown genes, the vast majority of spectra from untargeted mass spectrometry have unknown identity.
 As few as ~2\% of spectra can be annotated in untargeted mass spectrometry experiments \cite{da_silva_illuminating_2015}.
 This is a major unsolved problem in untargeted metabolomics because confirming spectra with known commercial standards is time-consuming.
@@ -256,9 +258,9 @@ Additionally, LC-MS/MS with data-dependent acquisition (the only type supported 
 This study would miss all metabolites that cannot be annotated via spectral search with the GNPS database, that are not abundant enough to be captured by LC-MS/MS, or that participate in pathways that are encoded by unknown genes.
 The pathways that these unknown genes and metabolites participate in could be important in CRC etiology and/or classification,
 and excluding them could negatively impact model performance as well as obscure our understanding of the underlying biology.
-If models using only active pathways do not perform better than those using all potential pathways in Aim 1C,
+If models using only active pathways do not perform better than those using all potential pathways in Aim 2C,
 the importance of unknown metabolites in CRC is a possible explanation.
-Directly using all metabolites instead of collapsing into known pathways could circumvent this problem,
+Directly using all spectra instead of collapsing into known pathways and metabolites could circumvent these problems,
 but that would greatly increase the number of ML features and would also necessarily include metabolites of non-microbial origin.
 
 Finally, cost is a plausible explanation for the lack of large datasets containing both metagenomics and metabolomics data.
