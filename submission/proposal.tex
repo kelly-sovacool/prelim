@@ -136,8 +136,8 @@ A Non-metric Multidimensional Scaling (NMDS) ordination plot will be created to 
 
 Analysis of Similarity (ANOSIM) will be performed on the pairwise dissimilarity matrix of samples to test whether the similarity in taxonomic composition within disease states is greater than the similarity within disease states \cite{clarke_non-parametric_1993}.
 To perform ANOSIM, all pairwise dissimilarities are ranked in order from most to least similar.
-The average rank similarities between samples ($\bar{r_B}$) and within samples ($\bar{r_W}$) are computed, and the test statistic $R$ is then calculated as:
-$$R = \frac{ \bar{r_B} - \bar{r_W} }{ \frac{1}{4} n(n-1) }$$
+The average rank similarities between samples ($\bar{r}_B$) and within samples ($\bar{r}_W$) are computed, and the test statistic $R$ is then calculated as:
+$$R = \frac{ \bar{r}_B - \bar{r}_W }{ \frac{1}{4} n(n-1) }$$
 with $n$ as the total number of samples.
 The $R$ statistic ranges from $-1$ to $1$, with $1$ representing greatest similarity within samples, -1 representing greatest similarity between samples, and $0$ representing no difference.
 The null hypothesis is that the disease states are interchangeable, i.e. there is no significant difference in taxonomic composition between disease states.
