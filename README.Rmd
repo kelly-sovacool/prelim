@@ -63,12 +63,20 @@ ml1 <- data.frame(OTUs = rnorm(100, .69, .07),
 ```{r auroc1}
 plot_auroc <- function(mldata) {
   mldata %>% ggplot(aes(model, auroc)) +
-    stat_summary(fun = mean, geom = "crossbar", color = "steelblue2") +
-    geom_jitter(size = 1, width = 0.2) +
-    geom_hline(yintercept = 0.5, linetype = 'dashed') +
-    labs(y = 'AUROC', x = 'model features') +
-    theme_classic(base_family = 'Chalkduster', base_size = 14) + 
-    theme(axis.ticks.x = element_line(colour=NA), panel.grid = element_line(colour="white"))
+    stat_summary(fun = mean, geom = "crossbar", color = "slategray4") +
+    geom_jitter(color = "darkslategray", alpha = 0.8, size = 1, width = 0.2) +
+    geom_hline(yintercept = 0.5, 
+               linetype = 'dashed',
+               color = 'slategray3') +
+    ylim(0.5, 1) +
+    labs(y = 'AUROC', x = 'Model Features') +
+    theme_classic(base_family = 'Chalkduster', 
+                  base_size = 14) + 
+    theme(axis.ticks.x = element_line(colour=NA),
+          axis.line.x = element_blank(),
+          axis.line.y = element_line(color = "slategray3"),
+          text = element_text(color = 'slategray'),
+          axis.text = element_text(color = 'darkslategray'))
 }
 
 ml1 %>% plot_auroc()
