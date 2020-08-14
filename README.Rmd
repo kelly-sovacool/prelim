@@ -54,7 +54,7 @@ metadata %>%
 set.seed(2019)
 ml1 <- data.frame(OTUs = rnorm(100, .69, .07),
                   pathways = rnorm(100, .79, .06),
-                  both = rnorm(100, .81, .05)) %>% 
+                  both = rnorm(100, .82, .05)) %>% 
     pivot_longer(everything(), names_to = "model", values_to = 'auroc') %>% 
     filter(auroc < 1) %>% 
     mutate(model = as_factor(model))
@@ -63,8 +63,7 @@ ml1 <- data.frame(OTUs = rnorm(100, .69, .07),
 ```{r auroc1}
 plot_auroc <- function(mldata) {
   mldata %>% ggplot(aes(model, auroc)) +
-    stat_summary(fun = mean, geom = "crossbar", color = "slategray4") +
-    geom_jitter(color = "darkslategray", alpha = 0.8, size = 1, width = 0.2) +
+    geom_boxplot(color = "slategray3", width = 0.3, lwd = 1, fatten = 1) +
     geom_hline(yintercept = 0.5, 
                linetype = 'dashed',
                color = 'slategray3') +
@@ -75,7 +74,7 @@ plot_auroc <- function(mldata) {
     theme(axis.ticks.x = element_line(colour=NA),
           axis.line.x = element_blank(),
           axis.line.y = element_line(color = "slategray3"),
-          text = element_text(color = 'slategray'),
+          text = element_text(color = 'darkslategray'),
           axis.text = element_text(color = 'darkslategray'))
 }
 
@@ -83,11 +82,13 @@ ml1 %>% plot_auroc()
 ```
 
 ```{r auroc2}
-ml2 <- data.frame(potential_pathways = rnorm(100, .76, .06),
-                  active_pathways = rnorm(100, .81, .05)) %>% 
+ml2 <- data.frame(potential_pathways = rnorm(100, .76, .05),
+                  active_pathways = rnorm(100, .82, .05)) %>% 
   pivot_longer(everything(), names_to = "model", values_to = 'auroc') %>%
-  filter(auroc < 1) %>%
-  mutate(model = as_factor(model))
+  filter(auroc < 1) %>% 
+  mutate(model = as_factor(model) %>% 
+           recode(potential_pathways = 'potential pathways',
+                  active_pathways = 'active pathways'))
 ml2 %>% plot_auroc()
 ```
 
