@@ -57,10 +57,11 @@ ml1 <- data.frame(OTUs = rnorm(100, .69, .07),
                   both = rnorm(100, .82, .05)) %>% 
     pivot_longer(everything(), names_to = "model", values_to = 'auroc') %>% 
     filter(auroc < 1) %>% 
-    mutate(model = as_factor(model))
+    mutate(model = as_factor(model) %>% 
+             recode(both = 'OTUs + pathways'))
 ```
 
-```{r auroc1}
+```{r auroc_tax}
 plot_auroc <- function(mldata) {
   mldata %>% ggplot(aes(model, auroc)) +
     geom_boxplot(color = "slategray3", width = 0.3, lwd = 1, fatten = 1) +
@@ -70,7 +71,7 @@ plot_auroc <- function(mldata) {
     ylim(0.5, 1) +
     labs(y = 'AUROC', x = 'Model Features') +
     theme_classic(base_family = 'Chalkduster', 
-                  base_size = 14) + 
+                  base_size = 18) + 
     theme(axis.ticks.x = element_line(colour=NA),
           axis.line.x = element_blank(),
           axis.line.y = element_line(color = "slategray3"),
@@ -81,7 +82,7 @@ plot_auroc <- function(mldata) {
 ml1 %>% plot_auroc()
 ```
 
-```{r auroc2}
+```{r auroc_metab}
 ml2 <- data.frame(potential_pathways = rnorm(100, .76, .05),
                   active_pathways = rnorm(100, .82, .05)) %>% 
   pivot_longer(everything(), names_to = "model", values_to = 'auroc') %>%

@@ -60,7 +60,8 @@ ml1 <- data.frame(OTUs = rnorm(100, .69, .07),
                   both = rnorm(100, .82, .05)) %>% 
     pivot_longer(everything(), names_to = "model", values_to = 'auroc') %>% 
     filter(auroc < 1) %>% 
-    mutate(model = as_factor(model))
+    mutate(model = as_factor(model) %>% 
+             recode(both = 'OTUs + pathways'))
 ```
 
 ``` r
@@ -73,7 +74,7 @@ plot_auroc <- function(mldata) {
     ylim(0.5, 1) +
     labs(y = 'AUROC', x = 'Model Features') +
     theme_classic(base_family = 'Chalkduster', 
-                  base_size = 14) + 
+                  base_size = 18) + 
     theme(axis.ticks.x = element_line(colour=NA),
           axis.line.x = element_blank(),
           axis.line.y = element_line(color = "slategray3"),
@@ -84,7 +85,7 @@ plot_auroc <- function(mldata) {
 ml1 %>% plot_auroc()
 ```
 
-![](figures/auroc1-1.png)<!-- -->
+![](figures/auroc_tax-1.png)<!-- -->
 
 ``` r
 ml2 <- data.frame(potential_pathways = rnorm(100, .76, .05),
@@ -97,4 +98,4 @@ ml2 <- data.frame(potential_pathways = rnorm(100, .76, .05),
 ml2 %>% plot_auroc()
 ```
 
-![](figures/auroc2-1.png)<!-- -->
+![](figures/auroc_metab-1.png)<!-- -->
