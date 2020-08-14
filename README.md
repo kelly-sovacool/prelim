@@ -55,16 +55,6 @@ metadata %>%
 
 ``` r
 set.seed(2019)
-ml1 <- data.frame(OTUs = rnorm(100, .69, .07),
-                  pathways = rnorm(100, .79, .06),
-                  both = rnorm(100, .82, .05)) %>% 
-    pivot_longer(everything(), names_to = "model", values_to = 'auroc') %>% 
-    filter(auroc < 1) %>% 
-    mutate(model = as_factor(model) %>% 
-             recode(both = 'OTUs + pathways'))
-```
-
-``` r
 plot_auroc <- function(mldata) {
   mldata %>% ggplot(aes(model, auroc)) +
     geom_boxplot(color = "slategray3", width = 0.3, lwd = 1, fatten = 1) +
@@ -81,21 +71,31 @@ plot_auroc <- function(mldata) {
           text = element_text(color = 'darkslategray'),
           axis.text = element_text(color = 'darkslategray'))
 }
+```
 
-ml1 %>% plot_auroc()
+``` r
+
+data.frame(OTUs = rnorm(100, .69, .04),
+                  pathways = rnorm(100, .79, .04),
+                  both = rnorm(100, .82, .04)) %>% 
+    pivot_longer(everything(), names_to = "model", values_to = 'auroc') %>% 
+    filter(auroc < 1) %>% 
+    mutate(model = as_factor(model) %>% 
+             recode(both = 'OTUs + pathways')) %>% 
+  plot_auroc()
 ```
 
 ![](figures/auroc_tax-1.png)<!-- -->
 
 ``` r
-ml2 <- data.frame(potential_pathways = rnorm(100, .76, .05),
-                  active_pathways = rnorm(100, .82, .05)) %>% 
+data.frame(potential_pathways = rnorm(100, .75, .04),
+                  active_pathways = rnorm(100, .83, .04)) %>% 
   pivot_longer(everything(), names_to = "model", values_to = 'auroc') %>%
   filter(auroc < 1) %>% 
   mutate(model = as_factor(model) %>% 
            recode(potential_pathways = 'potential pathways',
-                  active_pathways = 'active pathways'))
-ml2 %>% plot_auroc()
+                  active_pathways = 'active pathways')) %>% 
+  plot_auroc()
 ```
 
 ![](figures/auroc_metab-1.png)<!-- -->
