@@ -7,11 +7,11 @@
 
 <!-- badges: end -->
 
-|              |                                                                                                                 |                                |
-| ------------ | --------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| Abstract     | [PDF](docs/abstract.pdf)                                                                                        | [TeX](submission/abstract.tex) |
-| Proposal     | [PDF](docs/proposal.pdf)                                                                                        | [TeX](submission/proposal.tex) |
-| Presentation | [gslides](https://docs.google.com/presentation/d/19kXLBr-lk_3Wva_raEzOGOYW2AH-GfA2ngcSSdOFJlY/edit?usp=sharing) | \-                             |
+|              |                                |                                                                                                                 |
+| ------------ | ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| Abstract     | [PDF](docs/abstract.pdf)       | [TeX](submission/abstract.tex)                                                                                  |
+| Proposal     | [PDF](docs/proposal.pdf)       | [TeX](submission/proposal.tex)                                                                                  |
+| Presentation | [PDF](docs/prelim_2020-08.pdf) | [gslides](https://docs.google.com/presentation/d/19kXLBr-lk_3Wva_raEzOGOYW2AH-GfA2ngcSSdOFJlY/edit?usp=sharing) |
 
 ## Dataset
 
