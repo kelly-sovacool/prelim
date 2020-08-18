@@ -1,4 +1,3 @@
-# Bioinf PhD Prelim Exam
 
 Mon, 17 Aug. 2020
 
