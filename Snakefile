@@ -1,8 +1,8 @@
 rule targets:
     input:
         "README.md",
-        "docs/proposal.pdf",
-        "docs/presentation.html"
+        "docs/abstract.pdf",
+        "docs/proposal.pdf"
 
 rule compile_proposal:
     input:
@@ -10,7 +10,7 @@ rule compile_proposal:
         tex="submission/proposal.tex",
         pre="submission/preamble.tex",
         bib="submission/prelim.bib",
-        abs="submission/abstract.tex"
+        aims="submission/aims.tex"
     output:
         pdf="docs/proposal.pdf"
     shell:
@@ -22,7 +22,8 @@ rule compile_abstract:
     input:
         code="code/compile_tex.sh",
         tex="submission/abstract.tex",
-        pre="submission/preamble.tex"
+        pre="submission/preamble.tex",
+        aims='submission/aims.tex'
     output:
         pdf="docs/abstract.pdf"
     shell:
@@ -40,41 +41,6 @@ rule render_readme:
         format="github_document"
     script:
         "code/render.R"
-
-rule render_slides:
-    input:
-        code="code/render.R",
-        rmd="submission/presentation.Rmd"
-    output:
-        file="submission/presentation.html"
-        #extras=directory("submission/presentation_files")
-    params:
-        format="xaringan::moon_reader"
-    script:
-        "code/render.R"
-
-rule summon_remark:
-    output:
-        "docs/libs/remark-latest.min.js"
-    shell:
-        """
-        R -e 'xaringan::summon_remark(to = "docs/libs/")'
-        """
-
-rule clean_xaringan:
-    input:
-        files=rules.render_slides.output,
-        js=rules.summon_remark.output
-    output:
-        "docs/presentation.html"
-        #directory("docs/presentation_files")
-    shell:
-        """
-        for f in {input.files}; do
-            mv $f docs/
-        done
-        rm -r submission/libs
-        """
 
 rule texclean:
     shell:
