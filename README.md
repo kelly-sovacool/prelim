@@ -11,7 +11,7 @@
 | ------------------ | --------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | Abstract           | [PDF](docs/abstract.pdf)          | [TeX](submission/abstract.tex)                                                                                  |
 | Proposal           | [PDF](docs/proposal.pdf)          | [TeX](submission/proposal.tex)                                                                                  |
-| Presentation       | [PDF](docs/prelim_2020-08.pdf)    | [gslides](https://docs.google.com/presentation/d/19kXLBr-lk_3Wva_raEzOGOYW2AH-GfA2ngcSSdOFJlY/edit?usp=sharing) |
+| Presentation       | [PDF](docs/prelim_slides_2020-08.pdf)    | [gslides](https://docs.google.com/presentation/d/19kXLBr-lk_3Wva_raEzOGOYW2AH-GfA2ngcSSdOFJlY/edit?usp=sharing) |
 | Committee comments | [PDF](docs/sovacool_comments.pdf) | \-                                                                                                              |
 
 ## Dataset
